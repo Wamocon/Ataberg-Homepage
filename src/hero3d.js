@@ -135,7 +135,7 @@ export function initHero3d(canvas, viewport, imgEl) {
   gl.uniform1i(u.depth, 1);
   gl.uniform1f(u.vignette, 0.65);
 
-  const IMG_ASPECT = 1600 / 914;
+  const IMG_ASPECT = 2000 / 1333; // alanya-hero.jpg (3:2)
   const dpr = Math.min(window.devicePixelRatio, 1.75);
   const size = () => {
     const w = viewport.clientWidth, h = viewport.clientHeight;

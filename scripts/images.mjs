@@ -18,10 +18,16 @@ const OUT = 'public/img';
 /** A live photo path -> the local file harvested from it. */
 const local = (photo) => path.join(SRC, photo.replace(/^\/sites\/default\/files\//, '').replace(/\//g, '_'));
 
-// Editorial picks for the descent + section art. Curated by eye from raw/sheet.jpg.
+// Editorial picks for the descent + section art.
+//   hero + band: aspirational Alanya scenery (Unsplash, free commercial licence,
+//     see raw/stock/CREDITS.txt) — these are scene-setting decoration, not a
+//     property claim, so the postcard view of Alanya reads better than a dense
+//     apartment aerial.
+//   descent stages: Ataberk's OWN real complexes — the hero is the place, the
+//     descent dives into their actual properties.
 const PICKS = {
-  'hero-coast': '2026-03_ataberkestate-d28-3.jpg',
-  'hero-coast-2': '2026-03_ataberkestate-d28-2.jpg',
+  'hero-coast': 'alanya-hero.jpg',       // Alanya bay, harbour, mountains
+  'hero-coast-2': 'alanya-band.jpg',     // Alanya castle wall + turquoise beach
   'aerial-complex': '2026-03_ataberkestate-d28-1.jpg',
   'stage-towers': '2026-07_ataberkestate-d12-12.jpg',
   'stage-facade': '2026-07_ataberkestate-d12-11_3.jpg',

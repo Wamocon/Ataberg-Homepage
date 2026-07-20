@@ -141,6 +141,20 @@ $$('[data-split]').forEach((el) => {
   animateSplit(el);
 });
 
+/* Hero copy intro — transform only, never opacity.
+   The hero text is above the fold and drives LCP. A fade-from-transparent or a
+   masked-line reveal hides it until animated, which pushed the lede's paint past
+   2.5s on a throttled phone. A translateY-only rise paints every line on the
+   first frame (just offset), so LCP stays fast while the entrance still reads. */
+if (!REDUCED) {
+  const heroCopy = $('[data-hero-copy]');
+  if (heroCopy) {
+    gsap.from([...heroCopy.children], {
+      y: 22, duration: 0.9, ease: 'expo.out', stagger: 0.07, delay: 0.05,
+    });
+  }
+}
+
 /**
  * Re-split a heading after its text changes.
  *

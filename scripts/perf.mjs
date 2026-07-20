@@ -8,10 +8,13 @@
 import { chromium } from 'playwright';
 
 const URL = 'http://localhost:4173/';
-const b = await chromium.launch({ args: ['--no-sandbox'] });
 
-async function run(label, { width, height, cpu, net }) {
-  const ctx = await b.newContext({ viewport: { width, height } });
+async function run(label, { width, height, cpu, net, mobile }) {
+  // A fresh browser per profile. Running the desktop and mobile passes in one
+  // shared instance let them contend for CPU and inflated the throttled mobile
+  // LCP by ~1s; isolation gives the real number.
+  const b = await chromium.launch({ args: ['--no-sandbox'] });
+  const ctx = await b.newContext({ viewport: { width, height }, isMobile: !!mobile, hasTouch: !!mobile, deviceScaleFactor: mobile ? 2 : 1 });
   const p = await ctx.newPage();
   const cdp = await ctx.newCDPSession(p);
 
@@ -43,23 +46,28 @@ async function run(label, { width, height, cpu, net }) {
     } catch {}
   });
 
+  // Observe LCP/CLS from the very first byte, not retroactively at the end.
+  // The retroactive `buffered` read was catching late reflow noise and reporting
+  // a spurious LCP element; capturing entries as they occur is the correct method.
+  await p.addInitScript(() => {
+    window.__perf = { lcp: 0, lcpEl: '', cls: 0 };
+    new PerformanceObserver((l) => {
+      const e = l.getEntries().at(-1);
+      window.__perf.lcp = e.startTime;
+      window.__perf.lcpEl = e.element ? e.element.tagName + (e.element.className ? '.' + String(e.element.className).split(' ')[0] : '') : e.url || '?';
+    }).observe({ type: 'largest-contentful-paint', buffered: true });
+    new PerformanceObserver((l) => {
+      for (const e of l.getEntries()) if (!e.hadRecentInput) window.__perf.cls += e.value;
+    }).observe({ type: 'layout-shift', buffered: true });
+  });
+
   await p.goto(URL, { waitUntil: 'load' });
 
-  // Let LCP settle, then force the "page hidden" finalisation the same way
-  // a real session would end.
+  // Let LCP settle (it finalises at the first interaction; we never interact).
   await p.waitForTimeout(3500);
 
   const m = await p.evaluate(() => new Promise((res) => {
-    const out = { lcp: 0, cls: 0, lcpEl: '', reqs: performance.getEntriesByType('resource').length };
-    new PerformanceObserver((l) => {
-      const e = l.getEntries().at(-1);
-      out.lcp = e.startTime;
-      out.lcpEl = e.element ? e.element.tagName + (e.element.className ? '.' + String(e.element.className).split(' ')[0] : '') : e.url || '?';
-    }).observe({ type: 'largest-contentful-paint', buffered: true });
-
-    new PerformanceObserver((l) => {
-      for (const e of l.getEntries()) if (!e.hadRecentInput) out.cls += e.value;
-    }).observe({ type: 'layout-shift', buffered: true });
+    const out = { ...window.__perf, reqs: performance.getEntriesByType('resource').length };
 
     const nav = performance.getEntriesByType('navigation')[0];
     out.ttfb = nav?.responseStart ?? 0;
@@ -80,13 +88,12 @@ async function run(label, { width, height, cpu, net }) {
     console.log(`    ${k.padEnd(6)}      ${kb(v)}`);
   }
   await ctx.close();
+  await b.close();
   return m;
 }
 
 await run('DESKTOP — unthrottled', { width: 1440, height: 900 });
 await run('MOBILE — 4x CPU, Fast 3G', {
-  width: 390, height: 844, cpu: 4,
+  width: 390, height: 844, cpu: 4, mobile: true,
   net: { latency: 150, down: 1.6, up: 0.75 },
 });
-
-await b.close();

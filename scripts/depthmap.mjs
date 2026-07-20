@@ -20,7 +20,7 @@
 import sharp from 'sharp';
 import { mkdir } from 'node:fs/promises';
 
-const SRC = 'raw/orig/2026-03_ataberkestate-d28-3.jpg';
+const SRC = 'raw/orig/alanya-hero.jpg';
 const OUT = 'public/img/hero-coast-depth.webp';
 const W = 960;
 

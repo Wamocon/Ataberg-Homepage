@@ -181,7 +181,7 @@
       <picture>
         <source type="image/avif" srcset="/img/hero-coast-640.avif 640w, /img/hero-coast-1024.avif 1024w, /img/hero-coast-1600.avif 1600w" sizes="100vw">
         <source type="image/webp" srcset="/img/hero-coast-640.webp 640w, /img/hero-coast-1024.webp 1024w, /img/hero-coast-1600.webp 1600w" sizes="100vw">
-        <img src="/img/hero-coast-1600.jpg" alt="Aerial view over Mahmutlar, Alanya, with apartment blocks running down to the Mediterranean and Alanya castle on the horizon." width="1600" height="914" fetchpriority="high" decoding="sync">
+        <img src="/img/hero-coast-1600.jpg" alt="The bay of Alanya from the hillside, the harbour and marina below and the Taurus mountains behind." width="1600" height="1067" fetchpriority="high" decoding="sync">
       </picture>
     </figure>
 
@@ -210,10 +210,14 @@
     <div class="descent__scrim" aria-hidden="true"></div>
     <canvas class="descent__gl" data-gl aria-hidden="true"></canvas>
 
-    <div class="descent__copy">
-      <p class="eyebrow" data-fade data-i18n="hero.eyebrow">Alanya · Antalya · Mersin · since 2005</p>
-      <h1 class="display" data-split data-i18n="hero.h1">Property in Turkey</h1>
-      <p class="lede" data-fade data-i18n="hero.lede">
+    <!-- Above the fold and LCP-critical: no opacity-fade or masked-line reveal
+         here, both of which hide the text until animated and pushed the lede's
+         paint past 2.5s on a throttled phone. main.js gives this a transform
+         only intro instead, so every line paints instantly. -->
+    <div class="descent__copy" data-hero-copy>
+      <p class="eyebrow" data-i18n="hero.eyebrow">Alanya · Antalya · Mersin · since 2005</p>
+      <h1 class="display" data-i18n="hero.h1">Property in Turkey</h1>
+      <p class="lede" data-i18n="hero.lede">
         Twenty-one years selling the Turkish Mediterranean to buyers who live somewhere else.
         Licensed in Alanya, and here after the keys change hands.
       </p>
@@ -224,7 +228,7 @@
         — it is an existing strength, so it is restored here behind a
         disclosure rather than reduced to four selects.
       -->
-      <form class="quick" action="/turkey" method="get" data-search data-fade>
+      <form class="quick" action="/turkey" method="get" data-search>
         <div class="quick__row" data-quick-row><!--@quickrow--></div>
         <div class="quick__more" id="more-filters" data-more hidden><!--@more--></div>
         <div class="quick__bar">
@@ -237,7 +241,7 @@
         </div>
       </form>
 
-      <p class="quick__note" data-fade>
+      <p class="quick__note">
         <strong data-count="6000">0</strong> completed sales · licensed by the Alanya Chamber of Commerce
       </p>
     </div>
@@ -273,7 +277,7 @@
   <div class="band__media" data-band-media>
     <picture>
       <source type="image/avif" srcset="/img/hero-coast-2-1024.avif 1024w, /img/hero-coast-2-1600.avif 1600w" sizes="100vw">
-      <img src="/img/hero-coast-2-1600.webp" alt="The Mediterranean coastline at Alanya seen from above, apartment blocks running down to blue-flag beaches." width="1600" height="914" loading="lazy" decoding="async">
+      <img src="/img/hero-coast-2-1600.webp" alt="The old town of Alanya on its peninsula, the castle wall running down to a turquoise cove." width="1600" height="900" loading="lazy" decoding="async">
     </picture>
   </div>
   <div class="band__scrim" aria-hidden="true"></div>
