@@ -38,11 +38,13 @@ const cities = [
 ];
 
 const types = [
-  ['Apartments', 'apartments'], ['Villas and houses', 'villas'], ['Penthouses', 'penthouses'],
-  ['Commercial', 'commercial'], ['Land', 'land'], ['Hotels', 'hotels'],
+  ['Apartments', 'apartments', 'f.apartments'], ['Villas and houses', 'villas', 'f.villas'], ['Penthouses', 'penthouses', 'f.penthouses'],
+  ['Commercial', 'commercial', 'f.commercial'], ['Land', 'land', 'f.land'], ['Hotels', 'hotels', 'f.hotels'],
 ];
 
-const linkify = (arr, pre) => arr.map(([label, slug]) => ({ label, href: `${pre}/${slug}` }));
+// Districts/cities carry no key (proper nouns, same in every language); types
+// carry an i18n key so the mega-menu and footer translate with the page.
+const linkify = (arr, pre) => arr.map(([label, slug, k]) => ({ label, k, href: `${pre}/${slug}` }));
 
 /**
  * Price-band links. The live footer carries these against the apartments
@@ -80,12 +82,12 @@ export const MEGA = [
   {
     k: 'ftr.purpose',
     links: [
-      { label: 'For citizenship', href: '/turkish-citizenship' },
-      { label: 'For a residence permit', href: '/turkey/vid-na-jitelstvo' },
-      { label: 'To let out', href: '/turkey/for-rent' },
-      { label: 'Sea view', href: '/turkey/sea-view' },
-      { label: 'Front line', href: '/pervaya-l-n-ya' },
-      { label: 'Resale', href: '/turkey/alanya/vtorichka' },
+      { label: 'For citizenship', k: 'link.citizenship', href: '/turkish-citizenship' },
+      { label: 'For a residence permit', k: 'link.residencePurpose', href: '/turkey/vid-na-jitelstvo' },
+      { label: 'To let out', k: 'link.toLet', href: '/turkey/for-rent' },
+      { label: 'Sea view', k: 'f.seaView', href: '/turkey/sea-view' },
+      { label: 'Front line', k: 'link.frontLine', href: '/pervaya-l-n-ya' },
+      { label: 'Resale', k: 'f.resale', href: '/turkey/alanya/vtorichka' },
     ],
   },
 ];
@@ -109,28 +111,28 @@ export const FOOTER = [
     k: 'ftr.byType',
     links: [
       ...linkify(types.slice(0, 4), '/turkey'),
-      { label: 'Under construction', href: '/turkey/our-projects' },
-      { label: 'Resale', href: '/turkey/alanya/vtorichka' },
+      { label: 'Under construction', k: 'f.construction', href: '/turkey/our-projects' },
+      { label: 'Resale', k: 'f.resale', href: '/turkey/alanya/vtorichka' },
     ],
   },
   {
     k: 'ftr.buying',
     links: [
-      { label: 'How the purchase works', href: '/procedyra-pokypki' },
-      { label: 'Instalments', href: '/turkey/rassrochka' },
-      { label: 'Residence permit', href: '/turkey/vid-na-jitelstvo' },
-      { label: 'Turkish citizenship', href: '/turkish-citizenship' },
-      { label: 'Title deed (TAPU)', href: '/articles/tapu' },
+      { label: 'How the purchase works', k: 'link.howBuy', href: '/procedyra-pokypki' },
+      { label: 'Instalments', k: 'link.instalments', href: '/turkey/rassrochka' },
+      { label: 'Residence permit', k: 'link.residencePermit', href: '/turkey/vid-na-jitelstvo' },
+      { label: 'Turkish citizenship', k: 'link.turkishCitizenship', href: '/turkish-citizenship' },
+      { label: 'Title deed (TAPU)', k: 'link.tapu', href: '/articles/tapu' },
     ],
   },
   {
     k: 'ftr.company',
     links: [
-      { label: 'About us', href: '/about-company' },
-      { label: 'Our team', href: '/our-team' },
-      { label: 'Testimonials', href: '/testimonials' },
-      { label: 'Articles', href: '/articles' },
-      { label: 'Contacts', href: '/contacts' },
+      { label: 'About us', k: 'nav.about', href: '/about-company' },
+      { label: 'Our team', k: 'link.team', href: '/our-team' },
+      { label: 'Testimonials', k: 'link.testimonials', href: '/testimonials' },
+      { label: 'Articles', k: 'link.articles', href: '/articles' },
+      { label: 'Contacts', k: 'link.contacts', href: '/contacts' },
     ],
   },
 ];

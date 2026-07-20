@@ -353,6 +353,22 @@ export const T = {
     pl: 'Zarejestrowane w Izbie Przemysłowo-Handlowej w Alanyi. Licencjonowane biuro nieruchomości, działa od 2005 roku.',
   },
 
+  // ── footer / mega-menu link labels (tr inline; the merge below only fills
+  //    keys present in tr.json, so these keep their tr here) ──
+  'link.citizenship': { en: 'For citizenship', tr: 'Vatandaşlık için', ru: 'Для гражданства', pl: 'Dla obywatelstwa' },
+  'link.residencePurpose': { en: 'For a residence permit', tr: 'Oturma izni için', ru: 'Для ВНЖ', pl: 'Dla pobytu' },
+  'link.toLet': { en: 'To let out', tr: 'Kiraya vermek için', ru: 'Для сдачи в аренду', pl: 'Pod wynajem' },
+  'link.frontLine': { en: 'Front line', tr: 'Deniz cephesi', ru: 'Первая линия', pl: 'Pierwsza linia' },
+  'link.howBuy': { en: 'How the purchase works', tr: 'Satın alma nasıl işler', ru: 'Как проходит покупка', pl: 'Jak przebiega zakup' },
+  'link.instalments': { en: 'Instalments', tr: 'Taksit', ru: 'Рассрочка', pl: 'Raty' },
+  'link.residencePermit': { en: 'Residence permit', tr: 'Oturma izni', ru: 'ВНЖ', pl: 'Pobyt' },
+  'link.turkishCitizenship': { en: 'Turkish citizenship', tr: 'Türk vatandaşlığı', ru: 'Гражданство Турции', pl: 'Obywatelstwo tureckie' },
+  'link.tapu': { en: 'Title deed (TAPU)', tr: 'Tapu', ru: 'Тапу (свидетельство)', pl: 'Akt własności (TAPU)' },
+  'link.team': { en: 'Our team', tr: 'Ekibimiz', ru: 'Наша команда', pl: 'Nasz zespół' },
+  'link.testimonials': { en: 'Testimonials', tr: 'Görüşler', ru: 'Отзывы', pl: 'Opinie' },
+  'link.articles': { en: 'Articles', tr: 'Makaleler', ru: 'Статьи', pl: 'Artykuły' },
+  'link.contacts': { en: 'Contacts', tr: 'İletişim', ru: 'Контакты', pl: 'Kontakt' },
+
   // ── assistant ──
   'ai.open': { en: 'Ask Kaya about Alanya', ru: 'Спросите Каю об Аланье', pl: 'Zapytaj Kayę o Alanyę' },
   'wa.label': { en: 'Chat on WhatsApp', ru: 'Написать в WhatsApp', pl: 'Napisz na WhatsApp' },

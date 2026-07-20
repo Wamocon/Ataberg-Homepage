@@ -111,7 +111,7 @@ export const footerHTML = () =>
   FOOTER.map((col) => `
     <div class="ftr__col">
       <h2>${esc(t(col.k))}</h2>
-      <ul>${col.links.map((l) => `<li><a href="${l.href}">${esc(l.label)}</a></li>`).join('')}</ul>
+      <ul>${col.links.map((l) => `<li><a href="${l.href}">${esc(l.k ? t(l.k) : l.label)}</a></li>`).join('')}</ul>
     </div>`).join('');
 
 /* ── search ─────────────────────────────────────────────── */
@@ -178,7 +178,7 @@ const megaColsHTML = () =>
   MEGA.map((col) => `
     <div class="mega__col">
       <h3>${esc(t(col.k))}</h3>
-      <ul>${col.links.map((l) => `<li><a href="${l.href}">${esc(l.label)}</a></li>`).join('')}</ul>
+      <ul>${col.links.map((l) => `<li><a href="${l.href}">${esc(l.k ? t(l.k) : l.label)}</a></li>`).join('')}</ul>
     </div>`).join('');
 
 export const megaHTML = () => `
