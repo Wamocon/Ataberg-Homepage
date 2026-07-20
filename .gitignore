@@ -1,0 +1,15 @@
+# dependencies & build output
+node_modules/
+dist/
+
+# secrets — never commit
+.env
+.env.*
+!.env.example
+
+# harvested source material (56 MB, re-fetchable via npm run harvest).
+# The ENCODED output in public/img IS committed so the repo runs after clone.
+raw/
+
+# local server log
+*.log
