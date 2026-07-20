@@ -17,7 +17,8 @@
     "ask": "node scripts/ask.mjs",
     "shots": "node scripts/shots.mjs",
     "depthmap": "node scripts/depthmap.mjs",
-    "manual-test": "node scripts/manual-test.mjs"
+    "manual-test": "node scripts/manual-test.mjs",
+    "spellcheck-tr": "node scripts/spellcheck-tr.mjs"
   },
   "keywords": [],
   "author": "",
@@ -32,5 +33,9 @@
     "sharp": "^0.35.3",
     "vite": "^8.1.5"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "dictionary-tr": "^2.0.0",
+    "nspell": "^2.1.5"
+  }
 }
