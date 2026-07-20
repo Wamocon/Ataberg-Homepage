@@ -138,8 +138,11 @@ a { color: inherit; }
   padding-block: .6rem;
   box-shadow: 0 1px 0 var(--line);
 }
-.hdr__logo { flex: none; }
-.hdr__logo svg { width: 140px; height: 28px; }
+.hdr__logo { flex: none; position: relative; display: block; height: 28px; }
+.hdr__logo-img { display: block; height: 28px; width: auto; transition: opacity .45s var(--ease); }
+.hdr__logo-dark { position: absolute; inset: 0; opacity: 0; }
+.hdr[data-pinned] .hdr__logo-light { opacity: 0; }
+.hdr[data-pinned] .hdr__logo-dark { opacity: 1; }
 
 .hdr__nav { display: flex; gap: clamp(.9rem, 1.9vw, 2rem); font-size: .93rem; font-weight: 500; }
 .hdr__nav a { text-decoration: none; opacity: .88; position: relative; padding-block: .3rem; }
@@ -539,53 +542,72 @@ a { color: inherit; }
 .sec--news .form__note[data-ok] { color: var(--gold); }
 .sec--news .form__note[data-err] { color: #ff9c9c; }
 
-/* ── footer ──────────────────────────────────────────────── */
-.ftr { padding: clamp(2.4rem, 5vw, 4rem) var(--pad) 2rem; background: var(--navy); color: rgb(255 255 255 / .58); font-size: .86rem; }
+/* ── footer ──────────────────────────────────────────────────
+   Deliberately calm: brand on the left, four curated link columns on the right,
+   a quiet base row. The old ~150-link farm was trimmed in footer.js. */
+.ftr { padding: clamp(3rem, 6vw, 5rem) var(--pad) 2rem; background: var(--navy); color: rgb(255 255 255 / .6); font-size: .86rem; }
+.ftr__inner {
+  display: grid; gap: clamp(2rem, 5vw, 4rem);
+  grid-template-columns: minmax(14rem, 22rem) 1fr;
+  padding-block-end: 2.4rem; margin-block-end: 1.8rem;
+  border-block-end: 1px solid rgb(255 255 255 / .1);
+}
+.ftr__logo { height: 26px; width: auto; opacity: .95; }
+.ftr__tagline { margin-block: 1.1rem .9rem; font-size: .92rem; line-height: 1.5; color: rgb(255 255 255 / .72); max-width: 30ch; }
+.ftr__channels { display: flex; flex-direction: column; gap: .3rem; }
+.ftr__channels a { text-decoration: none; font-size: .88rem; color: rgb(255 255 255 / .8); width: fit-content; transition: color .2s; padding-block: .25rem; min-height: 24px; display: inline-flex; align-items: center; }
+.ftr__channels a:hover { color: var(--gold); }
+
 .ftr__tree {
-  display: grid; gap: 1.2rem clamp(1rem, 2.5vw, 2.5rem);
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
-  padding-block-end: 2.2rem; margin-block-end: 1.6rem;
-  border-block-end: 1px solid rgb(255 255 255 / .12);
+  display: grid; gap: 1.6rem clamp(1rem, 3vw, 2.5rem);
+  grid-template-columns: repeat(4, 1fr);
 }
 .ftr__col summary { list-style: none; cursor: default; }
 .ftr__col summary::-webkit-details-marker { display: none; }
 .ftr__col h2 {
-  display: inline; color: #fff; font-size: .78rem; font-weight: 700;
+  display: inline; color: #fff; font-size: .74rem; font-weight: 700;
   letter-spacing: .1em; text-transform: uppercase;
 }
-.ftr__col ul { list-style: none; margin: .9rem 0 0; padding: 0; display: flex; flex-direction: column; gap: .42rem; }
-.ftr__col a { text-decoration: none; font-size: .82rem; opacity: .72; transition: opacity .2s, padding .2s; }
-.ftr__col a:hover { opacity: 1; padding-inline-start: .25rem; }
+.ftr__col ul { list-style: none; margin: 1rem 0 0; padding: 0; display: flex; flex-direction: column; gap: .55rem; }
+.ftr__col a { text-decoration: none; font-size: .86rem; opacity: .72; transition: opacity .2s, transform .2s var(--ease); display: inline-block; }
+.ftr__col a:hover { opacity: 1; transform: translateX(3px); color: var(--gold); }
 
 .ftr__base { display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; justify-content: space-between; align-items: center; }
-.ftr__note { opacity: .62; margin-block-start: .25rem; font-size: .8rem; }
-.ftr__soc { display: flex; align-items: center; gap: .9rem; flex-wrap: wrap; }
-.ftr__soc a { font-size: .8rem; text-decoration: none; opacity: .72; }
-.ftr__soc a:hover { opacity: 1; }
-.ftr__dmca { opacity: .5; height: 22px; width: auto; }
+.ftr__note { opacity: .55; margin-block-start: .3rem; font-size: .78rem; }
+.ftr__soc { display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap; }
+.ftr__soc a { font-size: .82rem; text-decoration: none; opacity: .7; transition: opacity .2s; }
+.ftr__soc a:hover { opacity: 1; color: var(--gold); }
 
-@media (max-width: 700px) {
-  /* A wall of 150 links is unusable on a phone — collapse each column. */
-  .ftr__tree { grid-template-columns: 1fr; gap: 0; }
-  .ftr__col { border-block-end: 1px solid rgb(255 255 255 / .1); }
-  .ftr__col summary {
-    cursor: pointer; padding: .9rem 0; display: flex; align-items: center; justify-content: space-between;
-  }
-  .ftr__col summary::after { content: '+'; font-size: 1.1rem; opacity: .5; }
-  .ftr__col[open] summary::after { content: '−'; }
-  .ftr__col ul { padding-block-end: 1rem; margin-block-start: 0; }
+@media (max-width: 860px) {
+  .ftr__inner { grid-template-columns: 1fr; }
+  .ftr__tree { grid-template-columns: 1fr 1fr; gap: 1.4rem; }
+}
+@media (max-width: 460px) {
+  .ftr__tree { grid-template-columns: 1fr; gap: 1.2rem; }
 }
 
 /* ── assistant ───────────────────────────────────────────── */
-.ai-fab {
+/* Floating contact stack — WhatsApp above the assistant, bottom-right. */
+.fab-stack {
   position: fixed; z-index: 80; inset-block-end: 1.2rem; inset-inline-end: 1.2rem;
+  display: flex; flex-direction: column; align-items: flex-end; gap: .7rem;
+}
+.fab { transition: transform .3s var(--ease), box-shadow .3s var(--ease); }
+.fab:hover { transform: translateY(-2px); }
+
+.fab--wa {
+  display: grid; place-items: center; width: 3.4rem; height: 3.4rem;
+  border-radius: 50%; background: #25D366; color: #fff;
+  box-shadow: 0 12px 30px -8px rgb(37 211 102 / .6);
+}
+.fab--wa:hover { box-shadow: 0 16px 36px -8px rgb(37 211 102 / .75); }
+
+.ai-fab {
   display: inline-flex; align-items: center; gap: .5rem;
   background: var(--navy); color: #fff; border: 0; border-radius: 100px;
   padding: .85rem 1.3rem; font: inherit; font-size: .9rem; font-weight: 600; cursor: pointer;
   box-shadow: 0 12px 32px -10px rgb(32 41 90 / .7);
-  transition: transform .3s var(--ease);
 }
-.ai-fab:hover { transform: translateY(-2px); }
 .ai-fab span { color: var(--gold); }
 .ai-fab[hidden] { display: none; }
 

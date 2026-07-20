@@ -282,6 +282,8 @@ export const T = {
   'contact.office': { en: 'Alanya office', ru: 'Офис в Аланье', pl: 'Biuro w Alanyi' },
 
   // ── footer ──
+  'ftr.popular': { en: 'Popular areas', ru: 'Популярные районы', pl: 'Popularne rejony' },
+  'ftr.tagline': { en: 'Real estate for sale in Alanya, since 2005.', ru: 'Недвижимость в Аланье, с 2005 года.', pl: 'Nieruchomości w Alanyi, od 2005 roku.' },
   'ftr.alanya': { en: 'Property in Alanya', ru: 'Недвижимость в Аланье', pl: 'Nieruchomości w Alanyi' },
   'ftr.antalya': { en: 'Property in Antalya', ru: 'Недвижимость в Анталье', pl: 'Nieruchomości w Antalyi' },
   'ftr.mersin': { en: 'Property in Mersin', ru: 'Недвижимость в Мерсине', pl: 'Nieruchomości w Mersinie' },
@@ -306,6 +308,7 @@ export const T = {
 
   // ── assistant ──
   'ai.open': { en: 'Ask about Alanya', ru: 'Спросить об Аланье', pl: 'Zapytaj o Alanyę' },
+  'wa.label': { en: 'Chat on WhatsApp', ru: 'Написать в WhatsApp', pl: 'Napisz na WhatsApp' },
   'ai.title': { en: 'Ataberk Assistant', ru: 'Ассистент Ataberk', pl: 'Asystent Ataberk' },
   'ai.close': { en: 'Close assistant', ru: 'Закрыть ассистента', pl: 'Zamknij asystenta' },
   'ai.hello': {

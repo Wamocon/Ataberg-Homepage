@@ -11,7 +11,7 @@
  * at all.
  */
 import { LISTINGS, TABS, RATES } from './listings.js';
-import { FOOTER, FOOTER_COMBOS, MEGA, ARTICLES, ARTICLE_TABS } from './footer.js';
+import { FOOTER, MEGA, ARTICLES, ARTICLE_TABS } from './footer.js';
 import * as F from './filters.js';
 import { makeT, DEFAULT_LANG } from './i18n.js';
 import LISTING_I18N from './listing-i18n.json';
@@ -109,19 +109,10 @@ export const articleTabsHTML = (active = ARTICLE_TABS[0].key) =>
 
 export const footerHTML = () =>
   FOOTER.map((col) => `
-    <details class="ftr__col" open>
-      <summary><h2>${esc(t(col.k))}</h2></summary>
+    <div class="ftr__col">
+      <h2>${esc(t(col.k))}</h2>
       <ul>${col.links.map((l) => `<li><a href="${l.href}">${esc(l.label)}</a></li>`).join('')}</ul>
-    </details>`).join('');
-
-/** The district x type band — closed by default; it is a link farm for crawlers
- *  and the occasional deep-diver, not something to make a reader scroll past. */
-export const footerCombosHTML = () =>
-  FOOTER_COMBOS.map((col) => `
-    <details class="ftr__combo">
-      <summary>${esc(col.title)} ${esc(t('ftr.combos'))} <span class="ftr__n">${col.links.length}</span></summary>
-      <ul>${col.links.map((l) => `<li><a href="${l.href}">${esc(l.label)}</a></li>`).join('')}</ul>
-    </details>`).join('');
+    </div>`).join('');
 
 /* ── search ─────────────────────────────────────────────── */
 /** An option may carry `k` (an i18n key) or `label` (already-final text such as
@@ -217,7 +208,6 @@ export const SLOTS = () => ({
   '<!--@atabs-->': articleTabsHTML(),
   '<!--@articles-->': articlesHTML(ARTICLE_TABS[0].key),
   '<!--@footer-->': footerHTML(),
-  '<!--@combos-->': footerCombosHTML(),
   '<!--@quickrow-->': quickRowHTML(),
   '<!--@more-->': moreHTML(),
 });

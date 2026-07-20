@@ -97,12 +97,10 @@
 <!-- ───────────────────────── header ───────────────────────── -->
 <header class="hdr" data-hdr>
   <a class="hdr__logo" href="/" aria-label="Ataberk Estate home">
-    <svg viewBox="0 0 140 28" role="img" aria-hidden="true" focusable="false">
-      <rect x="0" y="4" width="20" height="20" rx="3" fill="#2E7EC4"/>
-      <path d="M4 20 L10 8 L16 20 Z" fill="#fff"/>
-      <text x="27" y="19" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="700" letter-spacing="-.2" fill="currentColor">ATABERK</text>
-      <text x="27" y="26" font-family="Inter,system-ui,sans-serif" font-size="6" font-weight="500" letter-spacing="2.6" fill="currentColor" opacity=".7">ESTATE</text>
-    </svg>
+    <!-- Ataberk's real logo. Two files: the white "RK" wordmark vanishes on the
+         pinned white header, so the dark variant crossfades in on scroll. -->
+    <img class="hdr__logo-img hdr__logo-light" src="/logo.svg" alt="Ataberk Estate" width="140" height="28" decoding="async">
+    <img class="hdr__logo-img hdr__logo-dark" src="/logo-dark.svg" alt="" aria-hidden="true" width="140" height="28" decoding="async">
   </a>
 
   <nav class="hdr__nav" aria-label="Main">
@@ -503,29 +501,44 @@
      region. It is most of their internal linking and local SEO, not decoration.
      Collapsed into <details> on mobile so it does not become a wall of links. -->
 <footer class="ftr">
-  <nav class="ftr__tree" aria-label="Footer" data-ftr><!--@footer--></nav>
-
-  <nav class="ftr__combos" aria-label="Browse by district and type"><!--@combos--></nav>
+  <div class="ftr__inner">
+    <div class="ftr__brand">
+      <img class="ftr__logo" src="/logo.svg" alt="Ataberk Estate" width="140" height="28" loading="lazy" decoding="async">
+      <p class="ftr__tagline" data-i18n="ftr.tagline">Real estate for sale in Alanya, since 2005.</p>
+      <div class="ftr__channels">
+        <a href="tel:+905495577557">+90 549 557 7 557</a>
+        <a href="https://api.whatsapp.com/send/?phone=905495577557" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+        <a href="mailto:info@ataberkestate.com">info@ataberkestate.com</a>
+      </div>
+    </div>
+    <nav class="ftr__tree" aria-label="Footer" data-ftr><!--@footer--></nav>
+  </div>
 
   <div class="ftr__base">
     <div class="ftr__meta">
-      <p>© 2005-2026 Ataberk Estate. Real estate in Turkey. All rights reserved.</p>
-      <p class="ftr__note">Registered with the Alanya Chamber of Commerce and Industry. Licensed real estate agency, trading since 2005.</p>
+      <p data-i18n="ftr.rights">© 2005-2026 Ataberk Estate. Real estate in Turkey. All rights reserved.</p>
+      <p class="ftr__note" data-i18n="ftr.reg">Registered with the Alanya Chamber of Commerce and Industry. Licensed real estate agency, trading since 2005.</p>
     </div>
     <div class="ftr__soc">
       <a href="https://www.facebook.com/ataberkrealestate/" aria-label="Facebook">Facebook</a>
       <a href="https://www.instagram.com/ataberkestate" aria-label="Instagram">Instagram</a>
       <a href="https://www.youtube.com/channel/UC6or9XupGctHZj6UVaPJi1w" aria-label="YouTube">YouTube</a>
       <a href="https://www.tiktok.com/@ataberkestate" aria-label="TikTok">TikTok</a>
-      <img class="ftr__dmca" src="/img/dmca.png" alt="DMCA protected" width="150" height="30" loading="lazy" decoding="async">
     </div>
   </div>
 </footer>
 
-<!-- Grounded assistant. UI only for now — NVIDIA API wiring deferred. -->
-<button class="ai-fab" data-ai-open aria-expanded="false" aria-controls="ai-panel" data-i18n="ai.open">
-  <span aria-hidden="true">✦</span> Ask about Alanya
-</button>
+<!-- Floating contact stack: WhatsApp (their real number) + the grounded assistant. -->
+<div class="fab-stack">
+  <a class="fab fab--wa" href="https://api.whatsapp.com/send/?phone=905495577557&text=Hello%20Ataberk%20Estate" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" data-i18n-attr="aria-label:wa.label">
+    <svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true" fill="currentColor">
+      <path d="M16 3C9.4 3 4 8.4 4 15c0 2.1.6 4.2 1.6 6L4 27l6.2-1.6c1.7.9 3.7 1.4 5.8 1.4 6.6 0 12-5.4 12-12S22.6 3 16 3zm0 21.8c-1.8 0-3.6-.5-5.1-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.7 9.7 0 0 1 6.3 15c0-5.4 4.3-9.7 9.7-9.7s9.7 4.3 9.7 9.7-4.3 9.8-9.7 9.8zm5.3-7.3c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.2-.7.1-.2.3-.8.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.5-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5s-.7-1.7-1-2.3c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/>
+    </svg>
+  </a>
+  <button class="ai-fab fab" data-ai-open aria-expanded="false" aria-controls="ai-panel" data-i18n="ai.open">
+    <span aria-hidden="true">✦</span> Ask about Alanya
+  </button>
+</div>
 <div class="ai" id="ai-panel" data-ai hidden>
   <div class="ai__bar">
     <strong data-i18n="ai.title">Ataberk Assistant</strong>

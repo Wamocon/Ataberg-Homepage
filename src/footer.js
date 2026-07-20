@@ -90,46 +90,27 @@ export const MEGA = [
   },
 ];
 
+/**
+ * Footer link tree — deliberately trimmed to four curated columns. The earlier
+ * footer carried ~150 links across ten columns plus a district x type band; it
+ * read as a link farm. This keeps the highest-intent links a buyer actually
+ * uses and lets the rest live on the /turkey catalogue and the mega-menu.
+ */
 export const FOOTER = [
   {
-    k: 'ftr.alanya',
-    links: linkify(alanya, '/turkey/alanya'),
-  },
-  {
-    k: 'ftr.antalya',
-    links: linkify(antalya, '/turkey/antalya'),
-  },
-  {
-    k: 'ftr.mersin',
-    links: linkify(mersin, '/turkey/mersin'),
-  },
-  {
-    k: 'ftr.other',
-    links: linkify(cities, '/turkey'),
+    k: 'ftr.popular',
+    links: [
+      ...linkify(alanya.slice(0, 6), '/turkey/alanya'),
+      { label: 'Antalya', href: '/turkey/antalya' },
+      { label: 'Mersin', href: '/turkey/mersin' },
+    ],
   },
   {
     k: 'ftr.byType',
     links: [
-      ...linkify(types, '/turkey'),
-      { label: 'Under construction', href: '/stroitelstvo/tyrciya' },
-      { label: 'Our projects', href: '/turkey/our-projects' },
-      { label: 'Offers from developers', href: '/turkey/builder' },
-    ],
-  },
-  {
-    k: 'ftr.byPrice',
-    links: priceLinks,
-  },
-  {
-    k: 'ftr.purpose',
-    links: [
-      { label: 'For citizenship', href: '/turkish-citizenship' },
-      { label: 'For a residence permit', href: '/turkey/vid-na-jitelstvo' },
-      { label: 'To let out', href: '/turkey/for-rent' },
-      { label: 'Sea view', href: '/turkey/sea-view' },
-      { label: 'Front line', href: '/pervaya-l-n-ya' },
-      { label: 'Resale in Alanya', href: '/turkey/alanya/vtorichka' },
-      { label: 'Resale in Antalya', href: '/turkey/antalya/vtorichka' },
+      ...linkify(types.slice(0, 4), '/turkey'),
+      { label: 'Under construction', href: '/turkey/our-projects' },
+      { label: 'Resale', href: '/turkey/alanya/vtorichka' },
     ],
   },
   {
@@ -137,27 +118,9 @@ export const FOOTER = [
     links: [
       { label: 'How the purchase works', href: '/procedyra-pokypki' },
       { label: 'Instalments', href: '/turkey/rassrochka' },
-      { label: 'Credit in Turkey', href: '/kredit' },
-      { label: 'What is a TAPU?', href: '/articles/tapu' },
-      { label: 'The resident card', href: '/articles/vid-na-jitelstvo' },
-      { label: 'Costs and upkeep', href: '/articles/rashodi-i-soderjanie' },
-      // The live footer links "Sell your property" twice: once here and once,
-      // malformed, to `/furniture-,`. We keep only the working one.
-      { label: 'Sell your property', href: '/prodat-vashy-nedvizhimost' },
-      { label: 'Catalogue', href: '/turkey' },
-    ],
-  },
-  {
-    k: 'ftr.services',
-    links: [
-      { label: 'All services', href: '/our-services' },
-      { label: 'Online tour', href: '/Online-tour' },
-      { label: 'Rent', href: '/rent' },
-      { label: 'Property management', href: '/our-services' },
-      { label: 'Transfer and car rental', href: '/our-services' },
-      { label: 'Furniture', href: '/furniture' },
-      { label: 'Legal support', href: '/our-services' },
-      { label: 'Translation', href: '/our-services' },
+      { label: 'Residence permit', href: '/turkey/vid-na-jitelstvo' },
+      { label: 'Turkish citizenship', href: '/turkish-citizenship' },
+      { label: 'Title deed (TAPU)', href: '/articles/tapu' },
     ],
   },
   {
@@ -165,12 +128,9 @@ export const FOOTER = [
     links: [
       { label: 'About us', href: '/about-company' },
       { label: 'Our team', href: '/our-team' },
-      { label: 'Certificates', href: '/certificates' },
-      { label: 'Vacancies', href: '/vacancy' },
       { label: 'Testimonials', href: '/testimonials' },
       { label: 'Articles', href: '/articles' },
       { label: 'Contacts', href: '/contacts' },
-      { label: 'Site map', href: '/sitemap' },
     ],
   },
 ];
