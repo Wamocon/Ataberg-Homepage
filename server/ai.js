@@ -88,9 +88,10 @@ const FLOOR = 0.35;
 
 /** Hand-over copy for the below-the-floor path, which never sees the model. */
 const REFUSE = {
-  en: "I can only answer from Ataberk's own listings and pages, and I don't have anything on that. A manager will know — call or WhatsApp +90 549 557 7 557, or email info@ataberkestate.com.",
-  ru: 'Я отвечаю только по данным сайта Ataberk, и по этому вопросу у меня ничего нет. Менеджер подскажет — позвоните или напишите в WhatsApp: +90 549 557 7 557, либо на info@ataberkestate.com.',
-  pl: 'Odpowiadam wyłącznie na podstawie danych Ataberk i nie mam nic na ten temat. Doradca będzie wiedział — proszę zadzwonić lub napisać na WhatsApp: +90 549 557 7 557, albo na info@ataberkestate.com.',
+  tr: "Yalnızca Ataberk'in kendi ilanlarına ve sayfalarına göre yanıt verebiliyorum ve bu konuda elimde bir şey yok. Bir danışman yardımcı olur. +90 549 557 7 557'yi arayın ya da WhatsApp'tan yazın, veya info@ataberkestate.com adresine e-posta gönderin.",
+  en: "I can only answer from Ataberk's own listings and pages, and I don't have anything on that. A manager will know. Call or WhatsApp +90 549 557 7 557, or email info@ataberkestate.com.",
+  ru: 'Я отвечаю только по данным сайта Ataberk, и по этому вопросу у меня ничего нет. Менеджер подскажет. Позвоните или напишите в WhatsApp: +90 549 557 7 557, либо на info@ataberkestate.com.',
+  pl: 'Odpowiadam wyłącznie na podstawie danych Ataberk i nie mam nic na ten temat. Doradca będzie wiedział. Proszę zadzwonić lub napisać na WhatsApp: +90 549 557 7 557, albo na info@ataberkestate.com.',
 };
 
 const readBody = (req) =>

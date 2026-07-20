@@ -15,18 +15,31 @@ const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 let repaintTabs = () => {};
 let repaintArticles = () => {};
 let repaintSearch = () => {};
+let showResults = () => {};      // assigned by the listings block; called from search
+let inResultsMode = () => false; // true while search results replace the tabbed rail
+let reshowResults = () => {};    // re-render the current results in the active language
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
 /* ───────────────────────── smooth scroll ─────────────────────────
    Lenis drives ScrollTrigger. Skipped entirely under reduced motion —
    hijacking scroll is exactly what that preference asks us not to do. */
+let lenis = null;
 if (!REDUCED) {
-  const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+  lenis = new Lenis({ duration: 1.1, smoothWheel: true });
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add((t) => lenis.raf(t * 1000));
   gsap.ticker.lagSmoothing(0);
 }
+
+/* One scroll entry point so the search jump respects Lenis instead of fighting
+   its rAF loop with a native smooth scroll. Offsets for the fixed header. */
+const scrollToEl = (sel) => {
+  const el = typeof sel === 'string' ? $(sel) : sel;
+  if (!el) return;
+  if (lenis) lenis.scrollTo(el, { offset: -70 });
+  else el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
 
 /* ───────────────────────── header ───────────────────────── */
 {
@@ -351,8 +364,21 @@ function render() {
 {
   const track = $('[data-rail-track]');
   const tabsEl = $('[data-tabs]');
+  const banner = $('[data-results]');
+  const bannerTxt = $('[data-results-txt]');
   let active = TABS[0].key;
   let pin = null;
+  // Results-mode state, so a language change (or any repaint) can restore the
+  // exact search results in the new language instead of dropping them.
+  let inResults = false, lastMatches = [], lastEmpty = false;
+
+  function hydrateFavs() {
+    for (const b of $$('[data-fav]')) {
+      const on = favs.has(Number(b.dataset.fav));
+      b.classList.toggle('is-on', on);
+      b.setAttribute('aria-pressed', String(on));
+    }
+  }
 
   // Tabs and the first rail are prerendered into index.html — see render.js.
 
@@ -383,6 +409,8 @@ function render() {
 
   function paint(key, initial = false, force = false) {
     active = key;
+    inResults = false;
+    if (banner) banner.hidden = true;   // leaving results mode for a real tab
     // The default tab's cards are already in the HTML; re-rendering them on
     // boot would throw away markup the browser has already painted. A language
     // change forces a repaint because the text itself has to change.
@@ -435,13 +463,34 @@ function render() {
 
   repaintTabs = () => paint(active, false, true);
 
+  // Search results: replace the rail with the matching listings, drop the tab
+  // highlight, and reveal a dismissible banner. Each card keeps its OWN primary
+  // tag (l.tabs[0]) rather than borrowing the last active tab's, so a card never
+  // mislabels itself. Clearing (or picking any tab) returns to the tabbed view.
+  showResults = (matches, label, empty) => {
+    inResults = true; lastMatches = matches; lastEmpty = empty;
+    $$('[data-tab]').forEach((b) => {
+      b.classList.remove('is-on'); b.setAttribute('aria-selected', 'false'); b.tabIndex = -1;
+    });
+    track.innerHTML = matches.map((l) => cardHTML(l, l.tabs[0], favs.has(l.id))).join('');
+    render();
+    hydrateFavs();
+    banner.hidden = false;
+    banner.classList.toggle('results--empty', empty);
+    // Write the count AFTER the live region is on-screen (next frame), so a
+    // screen reader observes the region empty first and then announces the count
+    // — announcing region+text in the same frame is usually silent.
+    requestAnimationFrame(() => { bannerTxt.textContent = label; });
+    buildRail();
+    ScrollTrigger.refresh();
+  };
+  banner?.querySelector('[data-results-clear]')?.addEventListener('click', () => paint(active, false, true));
+
+  inResultsMode = () => inResults;
+  reshowResults = () => showResults(lastMatches, lastEmpty ? t('search.none') : t('search.results', { n: lastMatches.length }), lastEmpty);
+
   paint(active, true);
-  // Prerendered cards ship with is-on absent; hydrate from localStorage.
-  for (const b of $$('[data-fav]')) {
-    const on = favs.has(Number(b.dataset.fav));
-    b.classList.toggle('is-on', on);
-    b.setAttribute('aria-pressed', String(on));
-  }
+  hydrateFavs();   // prerendered cards ship with is-on absent; hydrate from localStorage
   $('[data-fav-n]').textContent = String(favs.set.size);
   $('[data-fav-count]').classList.toggle('is-on', favs.set.size > 0);
 }
@@ -495,22 +544,45 @@ $$('[data-count]').forEach((el) => {
     });
   };
 
-  // Honest match count: computed against the real 32, not invented.
-  const count = () => {
+  const locMatch = (l, loc) => {
+    if (!loc) return true;
+    if (loc.startsWith('All of ')) return l.city === loc.slice(7);
+    return l.district === loc || l.city === loc;
+  };
+
+  // The real predicate, shared by the live count and the submit. All 32 homes
+  // on this page are for sale, so a "rent" request honestly returns nothing and
+  // the submit shows the empty state rather than pretending otherwise.
+  const matching = () => {
+    if (($('#q-deal')?.value ?? 'buy') === 'rent') return [];
     const max = Number(priceSel()?.value) || Infinity;
     const type = $('#q-type')?.value ?? '';
     const loc = $('#q-loc')?.value ?? '';
     const rooms = $('#q-rooms')?.value ?? '';
-    const n = LISTINGS.filter((l) =>
+    return LISTINGS.filter((l) =>
       l.price <= max &&
       (!type || l.type === type) &&
-      (!loc || loc.startsWith('All of') ? (!loc || l.city === loc.replace('All of ', '')) : (l.district === loc || l.city === loc)) &&
+      locMatch(l, loc) &&
       (!rooms || l.rooms.includes(rooms))
-    ).length;
-    $('[data-match]').textContent = t('search.match', { n, total: LISTINGS.length });
+    );
+  };
+
+  // Honest match count: computed against the real 32, not invented.
+  const count = () => {
+    $('[data-match]').textContent = t('search.match', { n: matching().length, total: LISTINGS.length });
   };
 
   form.addEventListener('change', count);
+
+  // "Search" was a no-op submit that reloaded the page. Now it filters the real
+  // listings into a results view and scrolls there — genuinely functional.
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const matches = matching();
+    if (matches.length) showResults(matches, t('search.results', { n: matches.length }), false);
+    else showResults([], t('search.none'), true);
+    scrollToEl('#listings');
+  });
   $('[data-cur]').addEventListener('change', () => { syncPrices(); });
 
   $('[data-more-toggle]').addEventListener('click', (e) => {
@@ -605,12 +677,12 @@ $$('[data-count]').forEach((el) => {
     note.removeAttribute('data-err');
     if (!email.checkValidity()) {
       note.setAttribute('data-err', '');
-      note.textContent = 'That email does not look right.';
+      note.textContent = t('news.badEmail');
       return;
     }
     if (!agree.checked) {
       note.setAttribute('data-err', '');
-      note.textContent = 'Please agree to the privacy policy first.';
+      note.textContent = t('news.needAgree');
       return;
     }
     note.setAttribute('data-ok', '');
@@ -656,6 +728,7 @@ $$('[data-count]').forEach((el) => {
     // Anything rendered from data has to be repainted in the new language.
     // The search form is prerendered markup, so it needs rebuilding too — the
     // first cut of this left it stubbornly English while the page changed.
+    const wasResults = inResultsMode();  // capture before repaintTabs clears it
     const more = $('[data-more]');
     const wasOpen = !more.hidden;
     $('[data-quick-row]').innerHTML = quickRowHTML();
@@ -667,15 +740,20 @@ $$('[data-count]').forEach((el) => {
     repaintTabs();
     repaintArticles();
     render();
+    // If the visitor was viewing search results, re-render them in the new
+    // language instead of silently dropping them back to the default tab.
+    if (wasResults) reshowResults();
     ScrollTrigger.refresh();
   }
 
   sel.addEventListener('change', (e) => applyLang(e.target.value));
 
-  if (saved && saved !== 'en' && LANGS.some((l) => l.code === saved)) {
-    sel.value = saved;
-    applyLang(saved);
-  }
+  // The page ships prerendered in DEFAULT_LANG (Turkish). If the visitor has a
+  // saved preference for a different language, swap to it; otherwise the static
+  // Turkish paint stands with no work.
+  const initial = saved && LANGS.some((l) => l.code === saved) ? saved : DEFAULT_LANG;
+  sel.value = initial;
+  if (initial !== DEFAULT_LANG) applyLang(initial);
 }
 
 /* ───────────────────────── contact form ─────────────────────────
@@ -698,7 +776,7 @@ $$('[data-count]').forEach((el) => {
     note.removeAttribute('data-err');
     if (bad) {
       note.setAttribute('data-err', '');
-      note.textContent = 'Please give us a name and a phone number.';
+      note.textContent = t('contact.need');
       return;
     }
     note.setAttribute('data-ok', '');
@@ -762,7 +840,7 @@ $$('[data-count]').forEach((el) => {
       if (!r.ok || !r.body) {
         const e = await r.json().catch(() => ({}));
         out.classList.remove('msg--typing');
-        out.textContent = e.error || 'The assistant is unavailable right now. Please call +90 549 557 7 557.';
+        out.textContent = e.error || t('ai.down');
         return;
       }
 
@@ -803,14 +881,14 @@ $$('[data-count]').forEach((el) => {
       }
 
       if (!text) {
-        out.textContent = 'I did not get an answer back. Please try again, or call +90 549 557 7 557.';
+        out.textContent = t('ai.noAnswer');
         return;
       }
       history.push({ role: 'user', content: q }, { role: 'assistant', content: text });
       cite(sources);
     } catch {
       out.classList.remove('msg--typing');
-      out.textContent = 'I could not reach the assistant. Please call +90 549 557 7 557.';
+      out.textContent = t('ai.unreachable');
     }
   }
 

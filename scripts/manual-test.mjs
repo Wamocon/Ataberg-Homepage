@@ -21,6 +21,9 @@ const ok = (name, pass, detail = '') => { results.push({ name, pass, detail }); 
   p.on('pageerror', (e) => errs.push(e.message));
   p.on('console', (m) => m.type() === 'error' && errs.push(m.text()));
 
+  // The site now defaults to Turkish; this journey asserts the English copy, so
+  // pin the language to English (which also exercises the runtime swap path).
+  await p.addInitScript(() => localStorage.setItem('ab-lang', 'en'));
   await p.goto(URL, { waitUntil: 'networkidle' });
   await p.waitForTimeout(1500);
 

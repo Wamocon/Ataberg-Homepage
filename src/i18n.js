@@ -14,7 +14,12 @@
  * register: plain, direct, no marketing gloss.
  */
 
+import TR from './tr.json';
+
+// Turkish is the site's primary language (default). English is kept as the
+// source of truth for the copy; ru/pl/tr are the translation layers.
 export const LANGS = [
+  { code: 'tr', label: 'TR', name: 'Türkçe', locale: 'tr-TR' },
   { code: 'en', label: 'EN', name: 'English', locale: 'en-GB' },
   { code: 'ru', label: 'RU', name: 'Русский', locale: 'ru-RU' },
   { code: 'pl', label: 'PL', name: 'Polski', locale: 'pl-PL' },
@@ -76,6 +81,10 @@ export const T = {
   'search.amenities': { en: 'Amenities', ru: 'Удобства', pl: 'Udogodnienia' },
   'search.nearby': { en: 'Nearby', ru: 'Рядом', pl: 'W pobliżu' },
   'search.match': { en: '{n} of {total} shown here match', ru: 'подходит {n} из {total} на этой странице', pl: 'pasuje {n} z {total} na tej stronie' },
+  'search.results': { en: '{n} homes match your search', ru: 'По вашему запросу: {n}', pl: 'Do Państwa kryteriów pasuje: {n}' },
+  'search.none': { en: 'No exact match on this page. Adjust the filters, or tell us what you are after and we will find it.', ru: 'На этой странице точных совпадений нет. Измените фильтры или напишите, что ищете, и мы подберём.', pl: 'Na tej stronie brak dokładnych trafień. Prosimy zmienić filtry lub napisać, czego Państwo szukają, a my to znajdziemy.' },
+  'search.clear': { en: 'Clear search', ru: 'Сбросить поиск', pl: 'Wyczyść wyniki' },
+  'search.ask': { en: 'Tell us what you are after', ru: 'Напишите, что вы ищете', pl: 'Napisz, czego szukasz' },
 
   // ── listings ──
   'listings.h2': { en: 'Our offers', ru: 'Наши предложения', pl: 'Nasze oferty' },
@@ -154,7 +163,7 @@ export const T = {
   },
   'stat.years': { en: 'years in Alanya', ru: 'лет в Аланье', pl: 'lat w Alanyi' },
   'stat.sales': { en: 'completed sales', ru: 'завершённых сделок', pl: 'zrealizowanych transakcji' },
-  'stat.people': { en: 'people on the estate team', ru: 'сотрудников в отделе недвижимости', pl: 'osób w dziale nieruchomości' },
+  'stat.people': { en: 'people across two offices', ru: 'сотрудников в двух офисах', pl: 'osób w dwóch biurach' },
   'stat.objects': { en: 'properties on our books', ru: 'объектов в базе', pl: 'nieruchomości w bazie' },
   'trust.1.h': { en: 'A real choice', ru: 'Реальный выбор', pl: 'Realny wybór' },
   'trust.1.p': {
@@ -213,10 +222,12 @@ export const T = {
   // ── reviews ──
   'reviews.h2': { en: 'What buyers say', ru: 'Что говорят покупатели', pl: 'Co mówią klienci' },
   'reviews.sub': {
-    en: 'Two of the reviews carried on the live site. More are on our testimonials page.',
-    ru: 'Два отзыва с нашего сайта. Больше на странице отзывов.',
-    pl: 'Dwie opinie z naszej strony. Więcej na stronie z opiniami.',
+    en: 'Real reviews from our clients, on our own site and on Yandex Maps.',
+    ru: 'Настоящие отзывы наших клиентов, на нашем сайте и в Яндекс Картах.',
+    pl: 'Prawdziwe opinie naszych klientów, na naszej stronie i w Yandex Maps.',
   },
+  'reviews.rating': { en: 'out of 5 · 13 reviews on Yandex Maps', ru: 'из 5 · 13 отзывов в Яндекс Картах', pl: 'na 5 · 13 opinii w Yandex Maps' },
+  'reviews.ratingLabel': { en: 'Rated 4.3 out of 5 on Yandex Maps, 13 reviews', ru: 'Оценка 4.3 из 5 в Яндекс Картах, 13 отзывов', pl: 'Ocena 4,3 na 5 w Yandex Maps, 13 opinii' },
   'reviews.video': { en: 'Video review', ru: 'Видеоотзыв', pl: 'Wideo opinia' },
   'reviews.q1': {
     en: 'We looked at a lot of agencies before we chose Ataberk. They showed us the apartment in Mahmutlar three times, answered every awkward question about the paperwork, and never once pushed us.',
@@ -225,12 +236,48 @@ export const T = {
   },
   'reviews.a1': { en: 'Germany · bought in Mahmutlar · November 2023', ru: 'Германия · покупка в Махмутларе · ноябрь 2023', pl: 'Niemcy · zakup w Mahmutlar · listopad 2023' },
   'reviews.q2': {
-    en: 'The manager did far more than sell me a flat. Bank account, residence permit, the utilities, all of it handled, in Russian, without me having to chase anyone.',
-    ru: 'Менеджер сделал куда больше, чем просто продал квартиру. Банковский счёт, ВНЖ, коммунальные, всё оформили, на русском, и мне не пришлось никого догонять.',
-    pl: 'Doradca zrobił znacznie więcej niż tylko sprzedał mi mieszkanie. Konto bankowe, pobyt, media, wszystko załatwione, po rosyjsku, bez konieczności pilnowania kogokolwiek.',
+    en: 'The manager did far more than sell me a flat. Natalya watched over the build for a whole year and answered every question along the way. Human, not just professional.',
+    ru: 'Менеджер сделал куда больше, чем просто продал квартиру. Наталья целый год вела стройку и отвечала на каждый вопрос. По-человечески, а не только профессионально.',
+    pl: 'Doradca zrobił znacznie więcej niż tylko sprzedał mi mieszkanie. Natalya przez cały rok czuwała nad budową i odpowiadała na każde pytanie. Po ludzku, nie tylko profesjonalnie.',
   },
-  'reviews.a2': { en: 'Russia · bought in Alanya', ru: 'Россия · покупка в Аланье', pl: 'Rosja · zakup w Alanyi' },
+  'reviews.a2': { en: 'Russia · bought off-plan · 2020', ru: 'Россия · покупка на этапе стройки · 2020', pl: 'Rosja · zakup na etapie budowy · 2020' },
+  'reviews.q3': {
+    en: 'A team of real professionals. Thanks to them we bought an apartment near Cleopatra beach, in a complex with full hotel facilities.',
+    ru: 'Команда настоящих профессионалов. Благодаря им мы купили квартиру у пляжа Клеопатры, в комплексе с гостиничной инфраструктурой.',
+    pl: 'Zespół prawdziwych profesjonalistów. Dzięki nim kupiliśmy mieszkanie przy plaży Kleopatry, w kompleksie z pełnym zapleczem hotelowym.',
+  },
+  'reviews.a3': { en: 'Germany · bought near Cleopatra beach · 2019', ru: 'Германия · покупка у пляжа Клеопатры · 2019', pl: 'Niemcy · zakup przy plaży Kleopatry · 2019' },
+  'reviews.q4': {
+    en: 'After a month of searching on my own, I came to Ataberk. A proper video walkthrough, everything on WhatsApp, and the penthouse in Oba closed in five days. They even sorted the cleaning and the utilities afterwards.',
+    ru: 'После месяца самостоятельных поисков я пришла в Ataberk. Нормальный видеообзор, всё в WhatsApp, и пентхаус в Обе закрыли за пять дней. Потом ещё и уборку, и коммунальные помогли оформить.',
+    pl: 'Po miesiącu samodzielnych poszukiwań trafiłam do Ataberk. Porządny spacer wideo, wszystko na WhatsApp, a penthouse w Obie sfinalizowano w pięć dni. Załatwili nawet sprzątanie i media.',
+  },
+  'reviews.a4': { en: 'Bought a penthouse in Oba · 2025 · via Yandex Maps', ru: 'Пентхаус в Обе · 2025 · Яндекс Карты', pl: 'Penthouse w Obie · 2025 · Yandex Maps' },
+  'reviews.q5': {
+    en: 'From my first message to approval on a 2+1 in Cikcilli was four days. Every step explained, all in Russian, nothing left for me to chase.',
+    ru: 'От первого сообщения до одобрения по 2+1 в Джикджилли прошло четыре дня. Каждый шаг объяснили, всё на русском, ничего не пришлось выбивать.',
+    pl: 'Od pierwszej wiadomości do akceptacji 2+1 w Cikcilli minęły cztery dni. Każdy krok wyjaśniony, wszystko po rosyjsku, niczego nie musiałam pilnować.',
+  },
+  'reviews.a5': { en: 'Bought in Cikcilli · 2025 · via Yandex Maps', ru: 'Джикджилли · 2025 · Яндекс Карты', pl: 'Cikcilli · 2025 · Yandex Maps' },
+  'reviews.q6': {
+    en: 'I decided to fly to Turkey on a whim. Natalia found me a cosy apartment and looked after everything. Two brilliant months, and service I would recommend to anyone.',
+    ru: 'Я спонтанно решила лететь в Турцию. Наталья нашла уютную квартиру и всё взяла на себя. Два прекрасных месяца и сервис, который я всем рекомендую.',
+    pl: 'Spontanicznie postanowiłam polecieć do Turcji. Natalia znalazła mi przytulne mieszkanie i wszystkim się zajęła. Dwa wspaniałe miesiące i obsługa, którą każdemu polecam.',
+  },
+  'reviews.a6': { en: 'Alanya · 2025 · via Yandex Maps', ru: 'Аланья · 2025 · Яндекс Карты', pl: 'Alanya · 2025 · Yandex Maps' },
   'reviews.all': { en: 'Read all testimonials', ru: 'Все отзывы', pl: 'Wszystkie opinie' },
+
+  // ── visit / map ──
+  'visit.h2': { en: 'Come and see us', ru: 'Приезжайте в гости', pl: 'Zapraszamy do nas' },
+  'visit.sub': {
+    en: 'Two offices on the Turkish Mediterranean. Drop in for a coffee, or we will meet you at the property.',
+    ru: 'Два офиса на турецком Средиземноморье. Заходите на кофе или встретимся прямо на объекте.',
+    pl: 'Dwa biura na tureckim Wybrzeżu Śródziemnym. Prosimy wpaść na kawę albo spotkamy się przy nieruchomości.',
+  },
+  'visit.directions': { en: 'Get directions', ru: 'Проложить маршрут', pl: 'Wyznacz trasę' },
+  'visit.hq': { en: 'Head office · Alanya', ru: 'Головной офис · Аланья', pl: 'Biuro główne · Alanya' },
+  'visit.office2': { en: 'Second office · Antalya', ru: 'Второй офис · Анталья', pl: 'Drugie biuro · Antalya' },
+  'visit.follow': { en: 'Follow us', ru: 'Мы в соцсетях', pl: 'Obserwuj nas' },
 
   // ── articles ──
   'articles.h2': { en: 'News and guidance', ru: 'Новости и полезное', pl: 'Aktualności i porady' },
@@ -307,14 +354,14 @@ export const T = {
   },
 
   // ── assistant ──
-  'ai.open': { en: 'Ask about Alanya', ru: 'Спросить об Аланье', pl: 'Zapytaj o Alanyę' },
+  'ai.open': { en: 'Ask Kaya about Alanya', ru: 'Спросите Каю об Аланье', pl: 'Zapytaj Kayę o Alanyę' },
   'wa.label': { en: 'Chat on WhatsApp', ru: 'Написать в WhatsApp', pl: 'Napisz na WhatsApp' },
-  'ai.title': { en: 'Ataberk Assistant', ru: 'Ассистент Ataberk', pl: 'Asystent Ataberk' },
+  'ai.title': { en: 'Kaya · Ataberk guide', ru: 'Кая · гид Ataberk', pl: 'Kaya · przewodnik Ataberk' },
   'ai.close': { en: 'Close assistant', ru: 'Закрыть ассистента', pl: 'Zamknij asystenta' },
   'ai.hello': {
-    en: "Ask me about districts, prices, the buying process, or residence permits. I answer only from Ataberk's own listings and pages, and I'll show you where each answer came from.",
-    ru: 'Спросите меня о районах, ценах, процедуре покупки или ВНЖ. Я отвечаю только по данным сайта Ataberk и показываю источник каждого ответа.',
-    pl: 'Proszę pytać o dzielnice, ceny, procedurę zakupu lub pobyt. Odpowiadam wyłącznie na podstawie danych Ataberk i pokazuję źródło każdej odpowiedzi.',
+    en: "Hi, I'm Kaya. Ask me about districts, prices, the buying process, or residence permits. I answer only from Ataberk's own listings and pages, and I'll show you where each answer came from.",
+    ru: 'Привет, я Кая. Спросите меня о районах, ценах, процедуре покупки или ВНЖ. Я отвечаю только по данным сайта Ataberk и показываю источник каждого ответа.',
+    pl: 'Cześć, jestem Kaya. Proszę pytać o dzielnice, ceny, procedurę zakupu lub pobyt. Odpowiadam wyłącznie na podstawie danych Ataberk i pokazuję źródło każdej odpowiedzi.',
   },
   'ai.placeholder': {
     en: 'e.g. 2+1 near the sea under €150,000',
@@ -329,6 +376,16 @@ export const T = {
     en: 'The assistant is unavailable right now. Please call +90 549 557 7 557.',
     ru: 'Ассистент сейчас недоступен. Позвоните, пожалуйста, по номеру +90 549 557 7 557.',
     pl: 'Asystent jest chwilowo niedostępny. Prosimy o telefon: +90 549 557 7 557.',
+  },
+  'ai.noAnswer': {
+    en: 'I did not get an answer back. Please try again, or call +90 549 557 7 557.',
+    ru: 'Ответ не пришёл. Попробуйте ещё раз или позвоните +90 549 557 7 557.',
+    pl: 'Nie otrzymałem odpowiedzi. Proszę spróbować ponownie lub zadzwonić: +90 549 557 7 557.',
+  },
+  'ai.unreachable': {
+    en: 'I could not reach the assistant. Please call +90 549 557 7 557.',
+    ru: 'Не удалось связаться с ассистентом. Позвоните, пожалуйста, +90 549 557 7 557.',
+    pl: 'Nie udało się połączyć z asystentem. Prosimy o telefon: +90 549 557 7 557.',
   },
   'ai.chip1': { en: 'What is there under €100,000?', ru: 'Что есть до €100 000?', pl: 'Co jest do €100 000?' },
   'ai.chip2': { en: 'What does 2+1 mean?', ru: 'Что значит 2+1?', pl: 'Co oznacza 2+1?' },
@@ -430,6 +487,10 @@ const F = {
 
 for (const [k, [en, ru, pl]] of Object.entries(F)) T[k] = { en, ru, pl };
 
+// Merge the reviewed Turkish strings (the primary language) into every row.
+// makeT falls back to en for any row a language is missing.
+for (const [k, v] of Object.entries(TR)) { if (T[k]) T[k].tr = v; }
+
 /** Fallback chain: requested language -> English. Never renders a bare key. */
 export function makeT(lang) {
   return (key, vars) => {
@@ -441,4 +502,4 @@ export function makeT(lang) {
   };
 }
 
-export const DEFAULT_LANG = 'en';
+export const DEFAULT_LANG = 'tr';

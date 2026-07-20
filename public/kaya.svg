@@ -1,0 +1,12 @@
+<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Kaya">
+  <defs>
+    <linearGradient id="kg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#c96a3f"/>
+      <stop offset="1" stop-color="#b8973f"/>
+    </linearGradient>
+  </defs>
+  <circle cx="20" cy="20" r="20" fill="url(#kg)"/>
+  <circle cx="20" cy="16.5" r="6" fill="#fff"/>
+  <path d="M6.5 27c2.15 0 2.15-1.7 4.3-1.7S13 27 15.1 27s2.15-1.7 4.3-1.7S21.6 27 23.7 27s2.15-1.7 4.3-1.7S30.2 27 32.3 27"
+        fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round"/>
+</svg>

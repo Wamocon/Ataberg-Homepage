@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="en">
+<html lang="tr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Property for Sale in Alanya, Turkey · Ataberk Estate</title>
-<meta name="description" content="Ataberk Estate has sold property in Alanya since 2005. Apartments, villas and penthouses on the Turkish Mediterranean, with legal support, residence-permit guidance and after-sales care from a licensed local agency.">
+<title>Alanya, Türkiye'de Satılık Gayrimenkul · Ataberk Estate</title>
+<meta name="description" content="Ataberk Estate 2005'ten beri Alanya'da gayrimenkul satıyor. Türk Akdeniz kıyısında daireler, villalar ve çatı katları; lisanslı yerel bir acenteden hukuki destek, oturma izni rehberliği ve satış sonrası hizmetle.">
 
 <!--
   Self-referencing canonical. The live site points its English homepage at
@@ -18,11 +18,14 @@
 <link rel="alternate" hreflang="x-default" href="https://www.ataberkhomes.com/">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="Property for Sale in Alanya, Turkey · Ataberk Estate">
-<meta property="og:description" content="A licensed Alanya agency since 2005. Apartments, villas and penthouses on the Turkish Mediterranean.">
+<meta property="og:title" content="Alanya, Türkiye'de Satılık Gayrimenkul · Ataberk Estate">
+<meta property="og:description" content="2005'ten beri lisanslı bir Alanya acentesi. Türk Akdeniz kıyısında daireler, villalar ve çatı katları.">
 <meta property="og:url" content="https://www.ataberkhomes.com/">
 <meta property="og:image" content="https://www.ataberkhomes.com/img/hero-coast-1600.jpg">
-<meta property="og:locale" content="en">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:locale:alternate" content="en_GB">
+<meta property="og:locale:alternate" content="ru_RU">
+<meta property="og:locale:alternate" content="pl_PL">
 <meta name="twitter:card" content="summary_large_image">
 
 <!--
@@ -130,7 +133,8 @@
     <label class="cur" for="lang">
       <span class="sr">Language</span>
       <select id="lang" data-lang>
-        <option value="en" selected>EN</option>
+        <option value="tr" selected>TR</option>
+        <option value="en">EN</option>
         <option value="ru">RU</option>
         <option value="pl">PL</option>
       </select>
@@ -231,16 +235,16 @@
         <div class="quick__more" id="more-filters" data-more hidden><!--@more--></div>
         <div class="quick__bar">
           <button class="quick__toggle" type="button" data-more-toggle aria-expanded="false" aria-controls="more-filters">
-            <span>More filters</span>
+            <span data-i18n="search.more">More filters</span>
           </button>
-          <button class="quick__reset" type="button" data-reset>Reset filter</button>
-          <a class="quick__map" href="/turkey/map" data-map>Look at map</a>
+          <button class="quick__reset" type="button" data-reset data-i18n="search.reset">Reset filter</button>
+          <a class="quick__map" href="/turkey/map" data-map data-i18n="search.map">Look at map</a>
           <output class="quick__count" data-match aria-live="polite"></output>
         </div>
       </form>
 
       <p class="quick__note">
-        <strong data-count="6000">0</strong> completed sales · licensed by the Alanya Chamber of Commerce
+        <strong data-count="6000">0</strong> <span data-i18n="hero.stat">completed sales · licensed by the Alanya Chamber of Commerce</span>
       </p>
     </div>
 
@@ -259,6 +263,14 @@
   </div>
 
   <div class="tabs" role="tablist" aria-label="Property selections" data-tabs><!--@tabs--></div>
+
+  <!-- Search results banner. Hidden until the hero search is submitted; then it
+       names the match count and lets the visitor clear back to the tabs. -->
+  <div class="results" data-results hidden>
+    <p class="results__txt" data-results-txt aria-live="polite"></p>
+    <a class="results__ask" href="#contact" data-i18n="search.ask">Tell us what you are after</a>
+    <button class="results__clear" type="button" data-results-clear data-i18n="search.clear">Clear search</button>
+  </div>
 
   <div class="rail" data-rail>
     <div class="rail__track" data-rail-track role="tabpanel" data-rail-panel><!--@rail--></div>
@@ -333,7 +345,7 @@
   <div class="stats" data-fade>
     <div class="stat"><strong data-count="21">0</strong><span data-i18n="stat.years">years in Alanya</span></div>
     <div class="stat"><strong data-count="6000">0</strong><span data-i18n="stat.sales">completed sales</span></div>
-    <div class="stat"><strong data-count="80">0</strong><span data-i18n="stat.people">people on the estate team</span></div>
+    <div class="stat"><strong data-count="38">0</strong><span data-i18n="stat.people">people across three offices</span></div>
     <div class="stat"><strong data-count="30000">0</strong><span data-i18n="stat.objects">properties on our books</span></div>
   </div>
 
@@ -390,22 +402,49 @@
 
 <!-- ───────────────────────── reviews ───────────────────────── -->
 <section class="sec sec--dark" id="reviews">
-  <div class="sec__head">
-    <h2 class="h2" data-split data-i18n="reviews.h2">What buyers say</h2>
-    <p class="sec__sub" data-i18n="reviews.sub">Two of the reviews carried on the live site. More are on our testimonials page.</p>
+  <div class="sec__head sec__head--split">
+    <div>
+      <h2 class="h2" data-split data-i18n="reviews.h2">What buyers say</h2>
+      <p class="sec__sub" data-i18n="reviews.sub">Real reviews from our clients, on our own site and on Yandex Maps.</p>
+    </div>
+    <!-- Aggregate rating. 4.3/5 from 13 reviews on Yandex Maps (Google was
+         unreachable during the audit). Attributed honestly to its source; no
+         per-review stars are invented, because the sources carry none. -->
+    <a class="rating" href="/testimonials" aria-label="Rated 4.3 out of 5 on Yandex Maps, 13 reviews" data-i18n-attr="aria-label:reviews.ratingLabel">
+      <span class="rating__num">4.3</span>
+      <span class="stars" style="--pct:86%" aria-hidden="true">★★★★★</span>
+      <span class="rating__src" data-i18n="reviews.rating">out of 5 · 13 reviews on Yandex Maps</span>
+    </a>
   </div>
-  <div class="grid grid--2">
+
+  <div class="grid grid--3">
     <figure class="quote quote--video" data-fade>
-      <a class="quote__vid" href="https://www.youtube.com/channel/UC6or9XupGctHZj6UVaPJi1w" aria-label="Watch Marco and Anna's video review">
+      <a class="quote__vid" href="https://www.youtube.com/channel/UC6or9XupGctHZj6UVaPJi1w" target="_blank" rel="noopener noreferrer" aria-label="Watch Marco and Anna's video review">
         <span class="quote__play" aria-hidden="true">▶</span>
         <span class="quote__vidlabel" data-i18n="reviews.video">Video review</span>
       </a>
       <blockquote data-i18n="reviews.q1">We looked at a lot of agencies before we chose Ataberk. They showed us the apartment in Mahmutlar three times, answered every awkward question about the paperwork, and never once pushed us.</blockquote>
-      <figcaption><strong>Marco and Anna</strong><span data-i18n="reviews.a1">Germany · bought in Mahmutlar · November 2023</span></figcaption>
+      <figcaption><span class="quote__avatar" aria-hidden="true">MA</span><span class="quote__who"><strong>Marco and Anna</strong><span data-i18n="reviews.a1">Germany · bought in Mahmutlar · November 2023</span></span></figcaption>
     </figure>
     <figure class="quote" data-fade>
-      <blockquote data-i18n="reviews.q2">The manager did far more than sell me a flat. Bank account, residence permit, the utilities, all of it handled, in Russian, without me having to chase anyone.</blockquote>
-      <figcaption><strong>Ramil</strong><span data-i18n="reviews.a2">Russia · bought in Alanya</span></figcaption>
+      <blockquote data-i18n="reviews.q2">The manager did far more than sell me a flat. Natalya watched over the build for a whole year and answered every question along the way. Human, not just professional.</blockquote>
+      <figcaption><span class="quote__avatar" aria-hidden="true">R</span><span class="quote__who"><strong>Ramil</strong><span data-i18n="reviews.a2">Russia · bought off-plan · 2020</span></span></figcaption>
+    </figure>
+    <figure class="quote" data-fade>
+      <blockquote data-i18n="reviews.q3">A team of real professionals. Thanks to them we bought an apartment near Cleopatra beach, in a complex with full hotel facilities.</blockquote>
+      <figcaption><span class="quote__avatar" aria-hidden="true">AO</span><span class="quote__who"><strong>Aleksandr and Olga</strong><span data-i18n="reviews.a3">Germany · bought near Cleopatra beach · 2019</span></span></figcaption>
+    </figure>
+    <figure class="quote" data-fade>
+      <blockquote data-i18n="reviews.q4">After a month of searching on my own, I came to Ataberk. A proper video walkthrough, everything on WhatsApp, and the penthouse in Oba closed in five days. They even sorted the cleaning and the utilities afterwards.</blockquote>
+      <figcaption><span class="quote__avatar" aria-hidden="true">S</span><span class="quote__who"><strong>Svetlana</strong><span data-i18n="reviews.a4">Bought a penthouse in Oba · 2025 · via Yandex Maps</span></span></figcaption>
+    </figure>
+    <figure class="quote" data-fade>
+      <blockquote data-i18n="reviews.q5">From my first message to approval on a 2+1 in Cikcilli was four days. Every step explained, all in Russian, nothing left for me to chase.</blockquote>
+      <figcaption><span class="quote__avatar" aria-hidden="true">Y</span><span class="quote__who"><strong>Yana</strong><span data-i18n="reviews.a5">Bought in Cikcilli · 2025 · via Yandex Maps</span></span></figcaption>
+    </figure>
+    <figure class="quote" data-fade>
+      <blockquote data-i18n="reviews.q6">I decided to fly to Turkey on a whim. Natalia found me a cosy apartment and looked after everything. Two brilliant months, and service I would recommend to anyone.</blockquote>
+      <figcaption><span class="quote__avatar" aria-hidden="true">I</span><span class="quote__who"><strong>Irina</strong><span data-i18n="reviews.a6">Alanya · 2025 · via Yandex Maps</span></span></figcaption>
     </figure>
   </div>
   <p class="sec__foot"><a class="lnk" href="/testimonials" data-i18n="reviews.all">Read all testimonials<span aria-hidden="true">→</span></a></p>
@@ -437,7 +476,7 @@
       <button class="btn btn--gold" type="submit" data-i18n="news.go">Subscribe</button>
       <label class="news__ok">
         <input type="checkbox" name="agree" required>
-        <span>I agree to the <a href="/privacy">privacy policy</a> and to being contacted.</span>
+        <span data-i18n="news.agree">I agree to the privacy policy and to being contacted.</span>
       </label>
       <p class="form__note" data-news-note role="status"></p>
     </form>
@@ -494,6 +533,64 @@
   </div>
 </section>
 
+<!-- ───────────────────────── visit / map ─────────────────────────
+     A real, premium map of the head office. Captured from CARTO/OSM tiles at
+     build time and shipped as a LOCAL image (scripts/office-map.mjs), so the
+     page keeps its offline guarantee: no tile calls at runtime. The pin is the
+     site's own, dead-centre over the office coordinates the map is centred on
+     (36.5563221, 31.977053, resolved from the company's own Google Maps link). -->
+<section class="sec sec--visit" id="visit">
+  <div class="sec__head">
+    <h2 class="h2" data-split data-i18n="visit.h2">Come and see us</h2>
+    <p class="sec__sub" data-i18n="visit.sub">Two offices on the Turkish Mediterranean. Drop in for a coffee, or we will meet you at the property.</p>
+  </div>
+
+  <div class="visit">
+    <a class="visit__map" href="https://maps.app.goo.gl/ry9JpmXuPwenhFiu7" target="_blank" rel="noopener noreferrer" aria-label="Open the Alanya head office in Google Maps">
+      <picture>
+        <source type="image/avif" srcset="/img/office-map-640.avif 640w, /img/office-map-1024.avif 1024w, /img/office-map-1600.avif 1600w" sizes="(max-width: 900px) 100vw, 62vw">
+        <source type="image/webp" srcset="/img/office-map-640.webp 640w, /img/office-map-1024.webp 1024w, /img/office-map-1600.webp 1600w" sizes="(max-width: 900px) 100vw, 62vw">
+        <img src="/img/office-map-1600.jpg" alt="Map of the Ataberk Estate head office on Zamanoğlu Caddesi in Alanya, by the Mediterranean coast." width="1600" height="1000" loading="lazy" decoding="async">
+      </picture>
+      <span class="visit__pin" aria-hidden="true"></span>
+      <span class="visit__cta"><span data-i18n="visit.directions">Get directions</span> <span aria-hidden="true">→</span></span>
+      <span class="visit__attr" aria-hidden="true">© OpenStreetMap · CARTO</span>
+    </a>
+
+    <div class="visit__side">
+      <article class="office">
+        <span class="office__k" data-i18n="visit.hq">Head office · Alanya</span>
+        <p class="office__addr">Dinek Mh. Zamanoğlu Cd. No: 27A / Kat 3<br>Ataberk Group Ofisi, Alanya / Antalya 07460</p>
+        <a class="lnk" href="https://maps.app.goo.gl/ry9JpmXuPwenhFiu7" target="_blank" rel="noopener noreferrer"><span data-i18n="visit.directions">Get directions</span><span aria-hidden="true">→</span></a>
+      </article>
+      <article class="office">
+        <span class="office__k" data-i18n="visit.office2">Second office · Antalya</span>
+        <p class="office__addr">Ermenek Mah. Kardeşkentler Cad. No: 24<br>Ataberk İş Merkezi, Kat 3, Muratpaşa / Antalya</p>
+      </article>
+      <article class="office office--follow">
+        <span class="office__k" data-i18n="visit.follow">Follow us</span>
+        <div class="socrow">
+          <a href="https://www.instagram.com/ataberkestate" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.06 1.8.25 2.23.42.56.22.96.48 1.38.9.42.41.68.81.9 1.37.16.43.35 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.06 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.43.16-1.06.35-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.06-1.8-.25-2.23-.41a3.72 3.72 0 0 1-1.38-.9 3.64 3.64 0 0 1-.9-1.38c-.16-.43-.35-1.06-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.06-1.17.25-1.8.41-2.23.21-.57.48-.96.9-1.38.42-.42.81-.68 1.38-.9.43-.16 1.06-.35 2.23-.41C8.42 2.17 8.8 2.16 12 2.16zm0 3.68a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-10.4a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0z"/></svg>
+          </a>
+          <a href="https://www.facebook.com/ataberkrealestate/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M13.5 22v-8h2.6l.4-3h-3V9c0-.9.24-1.5 1.5-1.5H16.6V4.8c-.3 0-1.3-.13-2.4-.13-2.4 0-4 1.46-4 4.14V11H7.6v3h2.6v8z"/></svg>
+          </a>
+          <a href="https://www.youtube.com/channel/UC6or9XupGctHZj6UVaPJi1w" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.51A3 3 0 0 0 .5 6.2 31.3 31.3 0 0 0 0 12a31.3 31.3 0 0 0 .5 5.8 3 3 0 0 0 2.12 2.14C4.5 20.45 12 20.45 12 20.45s7.5 0 9.38-.51a3 3 0 0 0 2.12-2.14A31.3 31.3 0 0 0 24 12a31.3 31.3 0 0 0-.5-5.8zM9.55 15.57V8.43L15.82 12z"/></svg>
+          </a>
+          <a href="https://www.tiktok.com/@ataberkestate" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12.53.02c1.3-.02 2.6-.01 3.9-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+          </a>
+          <a href="https://t.me/ataberkrealestate" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M11.94 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.06 0zm4.96 7.22c.1 0 .32.02.46.14a.5.5 0 0 1 .17.33c.02.09.04.3.02.47-.18 1.9-.96 6.5-1.36 8.63-.17.9-.5 1.2-.82 1.23-.7.06-1.23-.46-1.9-.9-1.06-.7-1.65-1.13-2.68-1.8-1.19-.78-.42-1.21.26-1.91.17-.19 3.25-2.98 3.3-3.23.01-.03.02-.15-.05-.21-.07-.06-.17-.04-.25-.02-.1.02-1.8 1.14-5.06 3.34-.48.33-.91.5-1.3.48-.43 0-1.25-.24-1.86-.44-.75-.24-1.35-.37-1.3-.79.03-.21.33-.44.9-.66 3.5-1.52 5.83-2.53 7-3.02 3.33-1.38 4.02-1.62 4.48-1.63z"/></svg>
+          </a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
 </main>
 
 <!-- ─────────────────────────
@@ -535,14 +632,18 @@
       <path d="M16 3C9.4 3 4 8.4 4 15c0 2.1.6 4.2 1.6 6L4 27l6.2-1.6c1.7.9 3.7 1.4 5.8 1.4 6.6 0 12-5.4 12-12S22.6 3 16 3zm0 21.8c-1.8 0-3.6-.5-5.1-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.7 9.7 0 0 1 6.3 15c0-5.4 4.3-9.7 9.7-9.7s9.7 4.3 9.7 9.7-4.3 9.8-9.7 9.8zm5.3-7.3c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.2-.7.1-.2.3-.8.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.5-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5s-.7-1.7-1-2.3c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/>
     </svg>
   </a>
-  <button class="ai-fab fab" data-ai-open aria-expanded="false" aria-controls="ai-panel" data-i18n="ai.open">
-    <span aria-hidden="true">✦</span> Ask about Alanya
+  <button class="ai-fab fab" data-ai-open aria-expanded="false" aria-controls="ai-panel">
+    <img class="ai-fab__logo" src="/kaya.svg" alt="" width="22" height="22" aria-hidden="true">
+    <span data-i18n="ai.open">Ask Kaya about Alanya</span>
   </button>
 </div>
 <div class="ai" id="ai-panel" data-ai hidden>
   <div class="ai__bar">
-    <strong data-i18n="ai.title">Ataberk Assistant</strong>
-    <button data-ai-close aria-label="Close assistant">✕</button>
+    <span class="ai__id">
+      <img class="ai__logo" src="/kaya.svg" alt="" width="26" height="26" aria-hidden="true">
+      <strong data-i18n="ai.title">Kaya · Ataberk guide</strong>
+    </span>
+    <button data-ai-close aria-label="Close assistant" data-i18n-attr="aria-label:ai.close">✕</button>
   </div>
   <div class="ai__log" data-ai-log aria-live="polite"></div>
   <form class="ai__form" data-ai-form>
