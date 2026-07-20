@@ -6,6 +6,8 @@
  * because the HEIF header (~300B) eats the gain on thumbnails.
  */
 import sharp from 'sharp';
+import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
 import { mkdir, readdir, stat, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
@@ -95,10 +97,22 @@ console.log(`\nListing covers (${LISTINGS.length})…`);
 let ok = 0;
 const thin = [];
 const missing = [];
+
+// Ataberk lists some properties under two reference numbers with byte-identical
+// photo sets (e.g. 12502/8611). Two identical cards side by side read as a bug,
+// so we hash each chosen cover and, on a collision, walk that listing's own
+// photos for a different frame of the same building. Honest (same property) and
+// visually distinct.
+const usedHashes = new Set();
+const hashOf = (f) => createHash('md5').update(readFileSync(f)).digest('hex');
+
 for (const l of LISTINGS) {
-  const photos = photoOf[l.id] || [];
-  const src = photos.map(local).find(existsSync);
-  if (!src) { missing.push(l.id); continue; }
+  const candidates = (photoOf[l.id] || []).map(local).filter(existsSync);
+  if (!candidates.length) { missing.push(l.id); continue; }
+
+  // Prefer the first frame whose pixels we have not already used as a cover.
+  let src = candidates.find((f) => !usedHashes.has(hashOf(f))) || candidates[0];
+  usedHashes.add(hashOf(src));
 
   const meta = await sharp(src).metadata();
   const w = Math.min(640, meta.width);

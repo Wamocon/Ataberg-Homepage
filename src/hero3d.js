@@ -37,32 +37,28 @@ uniform float uTime;
 uniform vec2  uImgAspect; // cover-fit correction
 uniform float uVignette;
 
-float hash(vec2 p){ p = fract(p*vec2(443.897,441.423)); p += dot(p,p.yx+19.19); return fract((p.x+p.y)*p.x); }
-
 void main(){
-  // object-fit: cover, then a subtle scroll-driven zoom toward the centre.
+  // object-fit: cover, then a gentle scroll-driven zoom toward the centre.
   vec2 uv = (vUv - 0.5) / uImgAspect / uZoom + 0.5;
 
-  // Depth drives parallax: near (depth->1) shifts most, far (->0) barely.
+  // Depth drives the parallax: near (depth->1) shifts most, far (->0) barely.
+  // Amplitude is deliberately small. A dense cityscape has hard building edges,
+  // and a large UV displacement smears them into a liquid mush — the effect has
+  // to stay subtle to keep the photo crisp and legible.
   float depth = texture2D(uDepth, uv).r;
 
-  // Auto-sway so it breathes even when the pointer is still.
-  vec2 sway = vec2(sin(uTime*0.25), cos(uTime*0.19)) * 0.004;
+  // A slow drift so the frame breathes even when the pointer is still.
+  vec2 sway = vec2(sin(uTime*0.16), cos(uTime*0.12)) * 0.0022;
   vec2 shift = (uPointer + sway) * uStrength * depth;
 
-  // Micro chromatic split on the nearest layer for an extra depth cue. Kept
-  // subtle on purpose — enough to read as depth, never as a glitch.
-  float ca = depth * uStrength * 0.2;
-  vec2 dir = normalize(uPointer + 0.0001);
-  float r = texture2D(uImage, uv + shift + dir*ca).r;
-  vec2  gb = texture2D(uImage, uv + shift).gb;
-  vec3 col = vec3(r, gb.x, gb.y);
+  // Single, sharp sample. No chromatic split, no grain — both dulled the photo
+  // and read as blur rather than depth on architecture.
+  vec3 col = texture2D(uImage, uv + shift).rgb;
 
-  // Vignette (squared shoulder) + faint grain.
+  // A light vignette only, so the colour stays vibrant.
   vec2 c = vUv - 0.5;
-  float vig = clamp(1.0 - dot(c,c) * uVignette, 0.0, 1.0); vig *= vig;
-  col *= mix(1.0, vig, 0.55);
-  col += (hash(vUv*uZoom + uTime) - 0.5) * 0.03;
+  float vig = clamp(1.0 - dot(c,c) * uVignette, 0.0, 1.0);
+  col *= mix(1.0, vig, 0.26);
 
   gl_FragColor = vec4(col, 1.0);
 }`;
@@ -137,7 +133,7 @@ export function initHero3d(canvas, viewport, imgEl) {
   };
   gl.uniform1i(u.image, 0);
   gl.uniform1i(u.depth, 1);
-  gl.uniform1f(u.vignette, 1.15);
+  gl.uniform1f(u.vignette, 0.65);
 
   const IMG_ASPECT = 1600 / 914;
   const dpr = Math.min(window.devicePixelRatio, 1.75);
@@ -170,12 +166,14 @@ export function initHero3d(canvas, viewport, imgEl) {
 
   // Base overscan (zoom > 1 at rest) leaves margin so the parallax shift never
   // reaches the texture edge — belt and braces alongside the cover math above.
-  const BASE_ZOOM = 1.06;
-  let strength = 0.015, zoom = BASE_ZOOM;
+  // Small overscan so the gentle parallax never reaches the texture edge.
+  const BASE_ZOOM = 1.035;
+  let strength = 0.007, zoom = BASE_ZOOM;
   const setScroll = (p) => {
     const k = Math.min(1, Math.max(0, p));
-    strength = 0.015 + k * 0.045;
-    zoom = BASE_ZOOM + k * 0.12;
+    // Subtle: near buildings shift a few px, not tens. Crisp over dramatic.
+    strength = 0.007 + k * 0.016;
+    zoom = BASE_ZOOM + k * 0.1;
   };
 
   let live = false, raf = 0;

@@ -35,15 +35,15 @@ export const T = {
 
   // ── hero ──
   'hero.eyebrow': {
-    en: 'Alanya · Antalya · Mersin — since 2005',
-    ru: 'Аланья · Анталья · Мерсин — с 2005 года',
-    pl: 'Alanya · Antalya · Mersin — od 2005 roku',
+    en: 'Alanya · Antalya · Mersin · since 2005',
+    ru: 'Аланья · Анталья · Мерсин · с 2005 года',
+    pl: 'Alanya · Antalya · Mersin · od 2005 roku',
   },
   'hero.h1': { en: 'Property in Turkey', ru: 'Недвижимость в Турции', pl: 'Nieruchomości w Turcji' },
   'hero.lede': {
     en: 'Twenty-one years selling the Turkish Mediterranean to buyers who live somewhere else. Licensed in Alanya, and here after the keys change hands.',
-    ru: 'Двадцать один год мы продаём недвижимость на турецком Средиземноморье покупателям из-за рубежа. Лицензированное агентство в Аланье — и мы остаёмся рядом после передачи ключей.',
-    pl: 'Od dwudziestu jeden lat sprzedajemy nieruchomości na tureckim Morzu Śródziemnym klientom z zagranicy. Licencjonowane biuro w Alanyi — i jesteśmy z Państwem także po przekazaniu kluczy.',
+    ru: 'Двадцать один год мы продаём недвижимость на турецком Средиземноморье покупателям из-за рубежа. Лицензированное агентство в Аланье. Мы остаёмся рядом и после передачи ключей.',
+    pl: 'Od dwudziestu jeden lat sprzedajemy nieruchomości na tureckim Morzu Śródziemnym klientom z zagranicy. Licencjonowane biuro w Alanyi. Jesteśmy z Państwem także po przekazaniu kluczy.',
   },
   'hero.stat': {
     en: 'completed sales · licensed by the Alanya Chamber of Commerce',
@@ -80,11 +80,20 @@ export const T = {
   // ── listings ──
   'listings.h2': { en: 'Our offers', ru: 'Наши предложения', pl: 'Nasze oferty' },
   'listings.sub': {
-    en: 'Everything on this page is a real property we can show you in person — in Alanya, Antalya or Mersin.',
-    ru: 'Каждый объект на этой странице реален, и мы готовы показать его лично — в Аланье, Анталье или Мерсине.',
-    pl: 'Każda nieruchomość na tej stronie jest realna i możemy ją pokazać osobiście — w Alanyi, Antalyi lub Mersinie.',
+    en: 'Everything on this page is a real property we can show you in person, in Alanya, Antalya or Mersin.',
+    ru: 'Каждый объект на этой странице реален, и мы готовы показать его лично в Аланье, Анталье или Мерсине.',
+    pl: 'Każda nieruchomość na tej stronie jest realna i możemy ją pokazać osobiście w Alanyi, Antalyi lub Mersinie.',
   },
   'listings.all': { en: 'View all properties', ru: 'Все объекты', pl: 'Wszystkie nieruchomości' },
+
+  // ── parallax band ──
+  'band.eyebrow': { en: 'The Turkish Mediterranean', ru: 'Турецкое Средиземноморье', pl: 'Turecka część Morza Śródziemnego' },
+  'band.h': { en: 'Where the mountains meet the sea', ru: 'Там, где горы встречают море', pl: 'Tam, gdzie góry spotykają morze' },
+  'band.p': {
+    en: 'Blue-flag beaches, a castle above the bay, and a warm coastline that draws buyers from across Europe. This is Alanya, and it is where our clients choose to live.',
+    ru: 'Пляжи с «Голубым флагом», крепость над бухтой и тёплое побережье, которое привлекает покупателей со всей Европы. Это Аланья, и именно здесь выбирают жить наши клиенты.',
+    pl: 'Plaże z Błękitną Flagą, zamek nad zatoką i ciepłe wybrzeże, które przyciąga kupujących z całej Europy. To Alanya, i właśnie tu nasi klienci wybierają życie.',
+  },
   'tab.exclusive': { en: 'Exclusive offers', ru: 'Эксклюзивные предложения', pl: 'Oferty ekskluzywne' },
   'tab.top': { en: 'Top offers', ru: 'Топ предложения', pl: 'Najlepsze oferty' },
   'tab.new': { en: 'New offers', ru: 'Новые предложения', pl: 'Nowe oferty' },
@@ -113,15 +122,15 @@ export const T = {
   },
   'why.2.h': { en: 'Every price bracket', ru: 'Любой бюджет', pl: 'Każdy przedział cenowy' },
   'why.2.p': {
-    en: 'From a modest studio or a well-priced resale through to a luxury villa. Our catalogue spans the whole range — and we will tell you honestly where your budget lands.',
-    ru: 'От скромной студии или недорогой вторички до люксовой виллы. Наш каталог охватывает весь диапазон — и мы честно скажем, что реально купить на ваш бюджет.',
-    pl: 'Od skromnego studia lub korzystnej oferty z rynku wtórnego po luksusową willę. Nasz katalog obejmuje cały zakres — i szczerze powiemy, na co wystarczy Państwa budżet.',
+    en: 'From a modest studio or a well-priced resale through to a luxury villa. Our catalogue spans the whole range, and we will tell you honestly where your budget lands.',
+    ru: 'От скромной студии или недорогой вторички до люксовой виллы. Наш каталог охватывает весь диапазон, и мы честно скажем, что реально купить на ваш бюджет.',
+    pl: 'Od skromnego studia lub korzystnej oferty z rynku wtórnego po luksusową willę. Nasz katalog obejmuje cały zakres i szczerze powiemy, na co wystarczy Państwa budżet.',
   },
   'why.3.h': { en: 'Payment on your terms', ru: 'Удобные условия оплаты', pl: 'Płatność na Państwa warunkach' },
   'why.3.p': {
     en: 'Instalments and bank credit on workable terms, so the purchase fits how you actually hold your money.',
-    ru: 'Рассрочка и банковский кредит на реальных условиях — покупка подстраивается под то, как вы распоряжаетесь деньгами.',
-    pl: 'Raty i kredyt bankowy na realnych warunkach — zakup dopasowuje się do Państwa finansów.',
+    ru: 'Рассрочка и банковский кредит на реальных условиях, чтобы покупка подстраивалась под то, как вы распоряжаетесь деньгами.',
+    pl: 'Raty i kredyt bankowy na realnych warunkach, aby zakup dopasował się do Państwa finansów.',
   },
   'why.4.h': { en: 'Residence for your family', ru: 'ВНЖ для вашей семьи', pl: 'Pobyt dla Państwa rodziny' },
   'why.4.p': {
@@ -131,8 +140,8 @@ export const T = {
   },
   'why.cta': {
     en: 'Call us and a manager will talk it through and shortlist what actually fits you.',
-    ru: 'Позвоните нам — менеджер всё объяснит и подберёт то, что действительно вам подходит.',
-    pl: 'Prosimy o kontakt — nasz doradca wszystko wyjaśni i dobierze to, co naprawdę Państwu odpowiada.',
+    ru: 'Позвоните нам, и менеджер всё объяснит и подберёт то, что действительно вам подходит.',
+    pl: 'Prosimy o kontakt, a nasz doradca wszystko wyjaśni i dobierze to, co naprawdę Państwu odpowiada.',
   },
   'why.ctaBtn': { en: 'Order a consultation', ru: 'Заказать консультацию', pl: 'Zamów konsultację' },
 
@@ -149,9 +158,9 @@ export const T = {
   'stat.objects': { en: 'properties on our books', ru: 'объектов в базе', pl: 'nieruchomości w bazie' },
   'trust.1.h': { en: 'A real choice', ru: 'Реальный выбор', pl: 'Realny wybór' },
   'trust.1.p': {
-    en: 'A large database of Turkish property across every budget — from a cosy, inexpensive studio to a villa with a sea view. You will find something that fits.',
-    ru: 'Большая база турецкой недвижимости на любой бюджет — от уютной недорогой студии до виллы с видом на море. Вы найдёте подходящий вариант.',
-    pl: 'Duża baza tureckich nieruchomości na każdy budżet — od przytulnego, niedrogiego studia po willę z widokiem na morze. Znajdą Państwo coś dla siebie.',
+    en: 'A large database of Turkish property across every budget, from a cosy, inexpensive studio to a villa with a sea view. You will find something that fits.',
+    ru: 'Большая база турецкой недвижимости на любой бюджет, от уютной недорогой студии до виллы с видом на море. Вы найдёте подходящий вариант.',
+    pl: 'Duża baza tureckich nieruchomości na każdy budżet, od przytulnego, niedrogiego studia po willę z widokiem na morze. Znajdą Państwo coś dla siebie.',
   },
   'trust.2.h': { en: 'The whole service', ru: 'Полный спектр услуг', pl: 'Pełen zakres usług' },
   'trust.2.p': {
@@ -162,14 +171,14 @@ export const T = {
   'trust.3.h': { en: 'Handled personally', ru: 'Индивидуальный подход', pl: 'Indywidualne podejście' },
   'trust.3.p': {
     en: 'Our managers work with each client individually and respect your confidentiality. If nothing on the site is right, we will go and find options for you.',
-    ru: 'Наши менеджеры работают с каждым клиентом индивидуально и соблюдают конфиденциальность. Если на сайте нет подходящего варианта — подберём его отдельно.',
-    pl: 'Nasi doradcy pracują z każdym klientem indywidualnie i szanują poufność. Jeśli na stronie nie ma nic odpowiedniego — znajdziemy opcje specjalnie dla Państwa.',
+    ru: 'Наши менеджеры работают с каждым клиентом индивидуально и соблюдают конфиденциальность. Если на сайте нет подходящего варианта, подберём его отдельно.',
+    pl: 'Nasi doradcy pracują z każdym klientem indywidualnie i szanują poufność. Jeśli na stronie nie ma nic odpowiedniego, znajdziemy opcje specjalnie dla Państwa.',
   },
   'trust.4.h': { en: 'We stay after the sale', ru: 'Мы остаёмся после сделки', pl: 'Zostajemy po transakcji' },
   'trust.4.p': {
-    en: 'Questions do not stop when the deal closes. Translation, paperwork, consultations, or just friendly advice — whenever you need it.',
-    ru: 'Вопросы не заканчиваются вместе со сделкой. Перевод, документы, консультации или просто дружеский совет — в любой момент.',
-    pl: 'Pytania nie kończą się wraz z transakcją. Tłumaczenia, dokumenty, konsultacje lub po prostu przyjazna rada — kiedy tylko będzie potrzebna.',
+    en: 'Questions do not stop when the deal closes. Translation, paperwork, consultations, or just friendly advice, whenever you need it.',
+    ru: 'Вопросы не заканчиваются вместе со сделкой. Перевод, документы, консультации или просто дружеский совет, в любой момент.',
+    pl: 'Pytania nie kończą się wraz z transakcją. Tłumaczenia, dokumenty, konsultacje lub po prostu przyjazna rada, kiedy tylko będzie potrzebna.',
   },
   'trust.5.h': { en: 'A secure transaction', ru: 'Безопасная сделка', pl: 'Bezpieczna transakcja' },
   'trust.5.p': {
@@ -186,9 +195,9 @@ export const T = {
 
   // ── prose ──
   'prose.h2': {
-    en: 'Property in Turkey — somewhere solid to put your money',
-    ru: 'Недвижимость в Турции — надёжное место для ваших средств',
-    pl: 'Nieruchomości w Turcji — pewne miejsce dla Państwa pieniędzy',
+    en: 'Property in Turkey, somewhere solid to put your money',
+    ru: 'Недвижимость в Турции, надёжное место для ваших средств',
+    pl: 'Nieruchomości w Turcji, pewne miejsce dla Państwa pieniędzy',
   },
   'prose.p1': {
     en: 'Ataberk Estate offers a full professional service to clients renting or buying property in Turkey. We find the right property quickly and paper the transaction correctly, but we also help you settle into life abroad, and we take after-sales care seriously. Put plainly: we do not disappear once the sale has gone through.',
@@ -197,15 +206,15 @@ export const T = {
   },
   'prose.p2': {
     en: 'The agency has long experience working with Turkish developers, banks and government offices. Years in this market have given us a genuine database of properties, the contacts to go with it, and a way of working with clients that actually functions. Hundreds of people have been happy with our work, and we would be glad to add you to them.',
-    ru: 'У агентства большой опыт работы с турецкими застройщиками, банками и государственными органами. Годы на этом рынке дали нам настоящую базу объектов, нужные связи и рабочую структуру взаимодействия с клиентами. Сотни людей остались довольны нашей работой — будем рады видеть среди них и вас.',
-    pl: 'Biuro ma duże doświadczenie we współpracy z tureckimi deweloperami, bankami i urzędami. Lata na tym rynku dały nam prawdziwą bazę nieruchomości, potrzebne kontakty i sprawnie działający sposób pracy z klientami. Setki osób są zadowolone z naszej pracy — z przyjemnością dołączymy do nich Państwa.',
+    ru: 'У агентства большой опыт работы с турецкими застройщиками, банками и государственными органами. Годы на этом рынке дали нам настоящую базу объектов, нужные связи и рабочую структуру взаимодействия с клиентами. Сотни людей остались довольны нашей работой, и мы будем рады видеть среди них и вас.',
+    pl: 'Biuro ma duże doświadczenie we współpracy z tureckimi deweloperami, bankami i urzędami. Lata na tym rynku dały nam prawdziwą bazę nieruchomości, potrzebne kontakty i sprawnie działający sposób pracy z klientami. Setki osób są zadowolone z naszej pracy i z przyjemnością dołączymy do nich Państwa.',
   },
 
   // ── reviews ──
   'reviews.h2': { en: 'What buyers say', ru: 'Что говорят покупатели', pl: 'Co mówią klienci' },
   'reviews.sub': {
     en: 'Two of the reviews carried on the live site. More are on our testimonials page.',
-    ru: 'Два отзыва с нашего сайта. Больше — на странице отзывов.',
+    ru: 'Два отзыва с нашего сайта. Больше на странице отзывов.',
     pl: 'Dwie opinie z naszej strony. Więcej na stronie z opiniami.',
   },
   'reviews.video': { en: 'Video review', ru: 'Видеоотзыв', pl: 'Wideo opinia' },
@@ -216,9 +225,9 @@ export const T = {
   },
   'reviews.a1': { en: 'Germany · bought in Mahmutlar · November 2023', ru: 'Германия · покупка в Махмутларе · ноябрь 2023', pl: 'Niemcy · zakup w Mahmutlar · listopad 2023' },
   'reviews.q2': {
-    en: 'The manager did far more than sell me a flat. Bank account, residence permit, the utilities — all of it handled, in Russian, without me having to chase anyone.',
-    ru: 'Менеджер сделал куда больше, чем просто продал квартиру. Банковский счёт, ВНЖ, коммунальные — всё оформили, на русском, и мне не пришлось никого догонять.',
-    pl: 'Doradca zrobił znacznie więcej niż tylko sprzedał mi mieszkanie. Konto bankowe, pobyt, media — wszystko załatwione, po rosyjsku, bez konieczności pilnowania kogokolwiek.',
+    en: 'The manager did far more than sell me a flat. Bank account, residence permit, the utilities, all of it handled, in Russian, without me having to chase anyone.',
+    ru: 'Менеджер сделал куда больше, чем просто продал квартиру. Банковский счёт, ВНЖ, коммунальные, всё оформили, на русском, и мне не пришлось никого догонять.',
+    pl: 'Doradca zrobił znacznie więcej niż tylko sprzedał mi mieszkanie. Konto bankowe, pobyt, media, wszystko załatwione, po rosyjsku, bez konieczności pilnowania kogokolwiek.',
   },
   'reviews.a2': { en: 'Russia · bought in Alanya', ru: 'Россия · покупка в Аланье', pl: 'Rosja · zakup w Alanyi' },
   'reviews.all': { en: 'Read all testimonials', ru: 'Все отзывы', pl: 'Wszystkie opinie' },
@@ -254,7 +263,7 @@ export const T = {
   },
   'news.badEmail': { en: 'That email does not look right.', ru: 'Похоже, e-mail указан неверно.', pl: 'Ten e-mail wygląda niepoprawnie.' },
   'news.needAgree': { en: 'Please agree to the privacy policy first.', ru: 'Сначала подтвердите согласие с политикой конфиденциальности.', pl: 'Prosimy najpierw zaakceptować politykę prywatności.' },
-  'news.demo': { en: 'Demo build — no mailing list is connected, so nothing was sent.', ru: 'Демоверсия — рассылка не подключена, ничего не отправлено.', pl: 'Wersja demo — newsletter nie jest podłączony, nic nie wysłano.' },
+  'news.demo': { en: 'Demo build. No mailing list is connected, so nothing was sent.', ru: 'Демоверсия. Рассылка не подключена, ничего не отправлено.', pl: 'Wersja demo. Newsletter nie jest podłączony, nic nie wysłano.' },
 
   // ── contact ──
   'contact.h2': { en: 'Talk to a person', ru: 'Поговорите с человеком', pl: 'Porozmawiaj z człowiekiem' },
@@ -269,7 +278,7 @@ export const T = {
   'contact.msg': { en: 'What are you looking for?', ru: 'Что вы ищете?', pl: 'Czego Państwo szukają?' },
   'contact.go': { en: 'Request a call', ru: 'Заказать звонок', pl: 'Zamów rozmowę' },
   'contact.need': { en: 'Please give us a name and a phone number.', ru: 'Укажите, пожалуйста, имя и телефон.', pl: 'Prosimy podać imię i numer telefonu.' },
-  'contact.demo': { en: 'Demo build — no endpoint is connected yet, so this has not been sent.', ru: 'Демоверсия — форма не подключена, заявка не отправлена.', pl: 'Wersja demo — formularz nie jest podłączony, zgłoszenie nie zostało wysłane.' },
+  'contact.demo': { en: 'Demo build. No endpoint is connected yet, so this has not been sent.', ru: 'Демоверсия. Форма не подключена, заявка не отправлена.', pl: 'Wersja demo. Formularz nie jest podłączony, zgłoszenie nie zostało wysłane.' },
   'contact.office': { en: 'Alanya office', ru: 'Офис в Аланье', pl: 'Biuro w Alanyi' },
 
   // ── footer ──
@@ -285,9 +294,9 @@ export const T = {
   'ftr.company': { en: 'Company', ru: 'Компания', pl: 'Firma' },
   'ftr.combos': { en: 'by district and type', ru: 'по районам и типам', pl: 'według dzielnic i rodzajów' },
   'ftr.rights': {
-    en: '© 2005–2026 Ataberk Estate — real estate in Turkey. All rights reserved.',
-    ru: '© 2005–2026 Ataberk Estate — недвижимость в Турции. Все права защищены.',
-    pl: '© 2005–2026 Ataberk Estate — nieruchomości w Turcji. Wszelkie prawa zastrzeżone.',
+    en: '© 2005-2026 Ataberk Estate. Real estate in Turkey. All rights reserved.',
+    ru: '© 2005-2026 Ataberk Estate. Недвижимость в Турции. Все права защищены.',
+    pl: '© 2005-2026 Ataberk Estate. Nieruchomości w Turcji. Wszelkie prawa zastrzeżone.',
   },
   'ftr.reg': {
     en: 'Registered with the Alanya Chamber of Commerce and Industry. Licensed real estate agency, trading since 2005.',

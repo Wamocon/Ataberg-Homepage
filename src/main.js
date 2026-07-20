@@ -134,17 +134,39 @@ function bindMagnetic() {
 }
 bindMagnetic();
 
-/* ───────────────────────── fade-ups ───────────────────────── */
+/* ───────────────────────── reveals ─────────────────────────
+   Elements marked data-fade rise and fade in. Siblings sharing a parent (a card
+   grid, a stat row) stagger off the first one entering, so a section resolves as
+   a wave rather than everything popping at once. once:true, so it never re-plays. */
 if (!REDUCED) {
-  $$('[data-fade]').forEach((el) => {
-    gsap.from(el, {
-      y: 26,
-      autoAlpha: 0,
-      duration: 0.9,
-      ease: 'expo.out',
-      scrollTrigger: { trigger: el, start: 'top 90%' },
+  const groups = new Map();
+  for (const el of $$('[data-fade]')) {
+    const p = el.parentElement;
+    if (!groups.has(p)) groups.set(p, []);
+    groups.get(p).push(el);
+  }
+  for (const els of groups.values()) {
+    els.forEach((el, i) => {
+      gsap.from(el, {
+        y: 34,
+        autoAlpha: 0,
+        duration: 1,
+        ease: 'expo.out',
+        delay: Math.min(i, 6) * 0.08,
+        scrollTrigger: { trigger: els[0], start: 'top 86%', once: true },
+      });
     });
-  });
+  }
+
+  // Parallax band: the oversized photo drifts against the scroll for depth.
+  const bandMedia = $('[data-band-media]');
+  if (bandMedia) {
+    gsap.fromTo(bandMedia, { yPercent: -9 }, {
+      yPercent: 9,
+      ease: 'none',
+      scrollTrigger: { trigger: '[data-band]', start: 'top bottom', end: 'bottom top', scrub: true },
+    });
+  }
 }
 
 /* ───────────────────────── the descent ─────────────────────────
@@ -523,7 +545,7 @@ $$('[data-count]').forEach((el) => {
       return;
     }
     note.setAttribute('data-ok', '');
-    note.textContent = 'Demo build — no mailing list is connected, so nothing was sent.';
+    note.textContent = t('news.demo');
   });
 }
 
@@ -610,7 +632,7 @@ $$('[data-count]').forEach((el) => {
       return;
     }
     note.setAttribute('data-ok', '');
-    note.textContent = 'Demo build — no endpoint is connected yet, so this has not been sent.';
+    note.textContent = t('contact.demo');
   });
 }
 

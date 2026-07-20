@@ -55,7 +55,7 @@ const bands = [
   [150000, 200000], [200000, 300000], [300000, 500000],
 ];
 const priceLinks = bands.map(([a, b]) => ({
-  label: `€${a.toLocaleString('en-GB')} – €${b.toLocaleString('en-GB')}`,
+  label: `€${a.toLocaleString('en-GB')} to €${b.toLocaleString('en-GB')}`,
   href: `/turkey/apartments/${a}--${b}`,
 }));
 
@@ -153,11 +153,11 @@ export const ARTICLES = {
   news: [
     { title: 'Gold and silver visas in Turkey', date: '2023-07-31', href: '/articles/zakony', img: 'art-1' },
     { title: 'Kat Karşılığı: how does shared construction work in Turkey?', date: '2025-05-29', href: '/articles/kat-karsiligi-how-does-shared-construction-work-turkey', img: 'art-2' },
-    { title: 'Real estate in Turkey 2025 — trends, prices, advice', date: '2025-04-18', href: '/articles/real-estate-turkey-', img: 'art-3' },
+    { title: 'Real estate in Turkey 2025: trends, prices, advice', date: '2025-04-18', href: '/articles/real-estate-turkey-', img: 'art-3' },
   ],
   blog: [
     { title: 'What counts as overstaying in Turkey, how to calculate it, and how to avoid fines and deportation', date: '2024-09-01', href: '/articles/what-overtime-turkey-how-calculate-it-and-avoid-fines-and-deportations', img: 'art-4' },
-    { title: 'Long- and short-term rentals in Turkey — rental income', date: '2024-07-01', href: '/articles/long-term-and-short-term-real-estate-rentals-turkey-rental-income', img: 'art-5' },
+    { title: 'Long and short-term rentals in Turkey: earning rental income', date: '2024-07-01', href: '/articles/long-term-and-short-term-real-estate-rentals-turkey-rental-income', img: 'art-5' },
     { title: 'The benefits of owning Turkish property', date: '2024-04-01', href: '/articles/benefits-owning-turkish-property', img: 'art-6' },
   ],
   useful: [

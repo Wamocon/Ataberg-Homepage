@@ -25,6 +25,11 @@ const prerender = () => ({
         if (!out.includes(slot)) throw new Error(`prerender: slot ${slot} missing from index.html`);
         out = out.replace(slot, markup);
       }
+      // Strip HTML comments from the shipped file. They are developer notes
+      // (some with em dashes), useful in source but pointless in the payload and
+      // visible to anyone who views source. Runs after slot filling so it never
+      // eats a placeholder. Keeps the two schema/ld+json script blocks intact.
+      out = out.replace(/<!--[\s\S]*?-->/g, '');
       return out;
     },
   },
