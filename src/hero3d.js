@@ -55,10 +55,11 @@ void main(){
   // and read as blur rather than depth on architecture.
   vec3 col = texture2D(uImage, uv + shift).rgb;
 
-  // A light vignette only, so the colour stays vibrant.
+  // A whisper of vignette only. The CSS scrim already darkens for the copy, so
+  // dimming again here just muddies the photo — kept very light.
   vec2 c = vUv - 0.5;
   float vig = clamp(1.0 - dot(c,c) * uVignette, 0.0, 1.0);
-  col *= mix(1.0, vig, 0.26);
+  col *= mix(1.0, vig, 0.16);
 
   gl_FragColor = vec4(col, 1.0);
 }`;
@@ -133,7 +134,7 @@ export function initHero3d(canvas, viewport, imgEl) {
   };
   gl.uniform1i(u.image, 0);
   gl.uniform1i(u.depth, 1);
-  gl.uniform1f(u.vignette, 0.65);
+  gl.uniform1f(u.vignette, 0.5);
 
   const IMG_ASPECT = 2000 / 1333; // alanya-hero.jpg (3:2)
   const dpr = Math.min(window.devicePixelRatio, 1.75);

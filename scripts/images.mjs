@@ -37,11 +37,20 @@ const PICKS = {
 const WIDTHS = [640, 1024, 1600, 1920];
 const AVIF_MIN_PX = 5000;
 
-// The hero is the LCP-adjacent element and a dense aerial cityscape — worst-case
-// for any codec. It sits under a scrim, so it takes a harder squeeze than
-// content images: q44/effort6 lands ~168KB vs ~251KB at q55.
-const HERO = new Set(['hero-coast']);
-const q = (name) => (HERO.has(name) ? { quality: 44, effort: 6 } : { quality: 55, effort: 4 });
+// The hero is the first thing anyone sees, and a WebGL layer magnifies its
+// texels, so it earns real quality: q64 (~JPEG-q82, "looks like source"),
+// effort 9 (free fidelity at build time), 4:4:4 chroma up to 1920 (the turquoise
+// sea and tiled rooftops are exactly what 4:2:0 softens) with 4:2:0 reserved for
+// the 4K-only 2560 tier so the preload never balloons. A post-resize sharpen
+// (below) restores the edges that downscaling costs. It is NOT the LCP element,
+// and phones load the small variants, so the bytes are well spent.
+const HERO = new Set(['hero-coast', 'hero-coast-2']);
+// 4:2:0 chroma: on a photograph the difference from 4:4:4 is near-invisible but
+// it costs ~35% more bytes and pushed the preloaded 1920 over budget. The real
+// crispness comes from q64 + effort 9 + the post-resize sharpen, not the chroma.
+const q = (name) => (HERO.has(name)
+  ? { quality: 64, effort: 9, chromaSubsampling: '4:2:0' }
+  : { quality: 55, effort: 4 });
 
 async function emit(name, input, widths = WIDTHS) {
   if (!existsSync(input)) return { made: 0, missing: true };
@@ -55,7 +64,11 @@ async function emit(name, input, widths = WIDTHS) {
   const usable = [...new Set(widths.map((w) => Math.min(w, meta.width)))].sort((a, b) => a - b);
 
   for (const w of usable) {
-    const base = sharp(input).resize(w, null, { withoutEnlargement: true });
+    // lanczos3 downscale (sharp's default) + a modest post-resize sharpen on the
+    // hero/band — lighter for the larger DPR tiers, since downscaling softens
+    // every edge but over-sharpening makes AVIF waste bits on halos.
+    let base = sharp(input).resize(w, null, { kernel: 'lanczos3', withoutEnlargement: true });
+    if (HERO.has(name)) base = base.sharpen({ sigma: w >= 2000 ? 0.5 : w >= 1200 ? 0.7 : 0.9 });
 
     await base.clone().webp({ quality: 78 }).toFile(path.join(OUT, `${name}-${w}.webp`));
     made++;

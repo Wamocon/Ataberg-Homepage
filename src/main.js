@@ -227,6 +227,15 @@ if (!REDUCED) {
       scrollTrigger: { trigger: '[data-band]', start: 'top bottom', end: 'bottom top', scrub: true },
     });
   }
+
+  // Ambient aurora on the flat dark fields. The CSS animation is compositor-only
+  // (transform/opacity), but CSS animations keep ticking when scrolled off, so
+  // an observer runs it only while the section is near the viewport.
+  const ambientIO = new IntersectionObserver(
+    (es) => es.forEach((e) => e.target.classList.toggle('ambient-run', e.isIntersecting)),
+    { rootMargin: '10% 0px' }
+  );
+  for (const el of $$('.sec--dark, .sec--news, .ftr')) ambientIO.observe(el);
 }
 
 /* ───────────────────────── the descent ─────────────────────────

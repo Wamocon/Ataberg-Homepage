@@ -40,6 +40,31 @@
   --ease: cubic-bezier(.22, 1, .36, 1);
 
   --font: 'Inter var', 'Inter fallback', ui-sans-serif, system-ui, 'Open Sans', 'Segoe UI', Roboto, sans-serif;
+
+  /* ── extended palette — builds on the 5 brand tokens, never replaces them.
+     Supporting sea/turquoise (the Mediterranean) and warm sand are low-chroma
+     so navy + gold still carry the brand. 60/30/10: navy structure / neutral
+     breathing room / <=10% gold. Gold does one job per viewport. */
+  --navy-800: #2f3d6e;   /* raised navy */
+  --navy-700: #425490;   /* button/gradient depth */
+  --navy-200: #cfdcff;   /* muted text ON DARK */
+  --panel:    #141a44;   /* deep navy surface */
+
+  --sea:      #008181;   /* teal accent on white (4.7:1) */
+  --sea-700:  #006566;   /* teal text on white (6.9:1) */
+  --sea-300:  #8dd7d6;   /* teal accent ON DARK */
+
+  --sand-50:  #faf6f1;   /* warm page-bg alt */
+  --sand-100: #f2ece3;   /* warm card/band */
+  --sand-600: #826c4f;   /* warm caption on white (5.0:1) */
+
+  --gold-300: #e5c467;   /* softened gold text ON DARK */
+  --gold-500: #cca200;   /* richer gold for gradients/hover */
+  --gold-600: #896c00;   /* accessible gold TEXT on white (5.0:1) */
+
+  --on-dark:       #ecedef;              /* body on ink (15.5:1) */
+  --on-dark-muted: var(--navy-200);      /* muted on ink */
+  --line-dark:     rgb(255 255 255 / .12);
 }
 
 /* Metrics-matched fallback. LCP here is the H1 (text), so font-display:swap
@@ -92,22 +117,29 @@ a { color: inherit; }
 
 :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
 
-/* ── buttons ─────────────────────────────────────────────── */
+/* ── buttons ─────────────────────────────────────────────────
+   Tonal gradient fills give the buttons depth (a subtle top-to-bottom light
+   ramp) rather than a flat block. Gold gets a warm foil sheen. */
 .btn {
-  --bg-btn: var(--navy); --fg-btn: #fff;
+  --fg-btn: #fff;
   display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
-  background: var(--bg-btn); color: var(--fg-btn);
+  background: linear-gradient(180deg in oklch, var(--navy-700), var(--navy));
+  color: var(--fg-btn);
   border: 0; border-radius: 100px;
   padding: .85rem 1.6rem;
   font: inherit; font-weight: 600; font-size: .94rem;
   cursor: pointer; text-decoration: none; white-space: nowrap;
-  transition: transform .3s var(--ease), box-shadow .3s var(--ease), background .3s var(--ease);
+  transition: transform .3s var(--ease), box-shadow .3s var(--ease), filter .3s var(--ease);
 }
-.btn:hover { transform: translateY(-2px); box-shadow: 0 10px 26px -8px rgb(32 41 90 / .5); }
+.btn:hover { transform: translateY(-2px); box-shadow: 0 12px 28px -10px rgb(32 41 90 / .55); filter: brightness(1.06); }
 .btn:active { transform: translateY(0); }
-.btn--gold  { --bg-btn: var(--gold); --fg-btn: var(--ink); }
-.btn--gold:hover { box-shadow: 0 10px 26px -8px rgb(254 207 61 / .75); }
-.btn--ghost { --bg-btn: transparent; --fg-btn: currentColor; border: 1px solid currentColor; }
+.btn--gold {
+  --fg-btn: var(--ink);
+  background: linear-gradient(180deg in oklch, #ffe08a 0%, var(--gold) 52%, var(--gold-500) 100%);
+}
+.btn--gold:hover { box-shadow: 0 12px 28px -10px rgb(254 207 61 / .7); }
+.btn--ghost { background: transparent; --fg-btn: currentColor; border: 1px solid currentColor; }
+.btn--ghost:hover { filter: none; }
 .btn--ghost:hover { box-shadow: none; }
 .btn--full  { width: 100%; }
 
@@ -209,15 +241,27 @@ a { color: inherit; }
      copy          z 3  */
 .descent__gl { position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0; }
 
-/* The hero is a bright, high-frequency aerial — white rooftops directly behind
-   the headline. The copy needs a real scrim under it, not a vignette around it:
-   darkest at the centre where the text sits, easing out to the edges. Measured
-   at ~7:1 for the lede against the worst-case white rooftops. */
+/* An eased spotlight, not a blanket. It darkens only behind the centred copy
+   and under the header, leaving ~70% of the Alanya photo fully vivid. Fades use
+   color-mix(... transparent) in oklab, never the bare `transparent` keyword —
+   that keyword is transparent-black and injects a grey fringe. The copy carries
+   text-shadow for the final contrast margin; the lede measures >4.5:1 over the
+   worst-case rooftops beneath it. */
 .descent__scrim {
   position: absolute; inset: 0; z-index: 2; pointer-events: none;
   background:
-    radial-gradient(78% 62% at 50% 48%, rgb(10 14 36 / .74) 0%, rgb(10 14 36 / .52) 45%, rgb(10 14 36 / .12) 78%, transparent 100%),
-    linear-gradient(180deg, rgb(10 14 36 / .68) 0%, rgb(10 14 36 / .28) 28%, rgb(10 14 36 / .34) 66%, rgb(10 14 36 / .88) 100%);
+    radial-gradient(72% 56% at 50% 46% in oklab,
+      color-mix(in oklab, var(--ink) 60%, transparent) 0%,
+      color-mix(in oklab, var(--ink) 48%, transparent) 34%,
+      color-mix(in oklab, var(--ink) 26%, transparent) 58%,
+      color-mix(in oklab, var(--ink) 10%, transparent) 78%,
+      color-mix(in oklab, var(--ink) 0%, transparent) 100%),
+    linear-gradient(180deg in oklab,
+      color-mix(in oklab, var(--ink) 50%, transparent) 0%,
+      color-mix(in oklab, var(--ink) 12%, transparent) 22%,
+      color-mix(in oklab, var(--ink) 0%, transparent) 46%,
+      color-mix(in oklab, var(--ink) 0%, transparent) 62%,
+      color-mix(in oklab, var(--ink) 30%, transparent) 100%);
 }
 
 /* The header is fixed over this. Centring the copy in 100svh with no allowance
@@ -397,14 +441,20 @@ a { color: inherit; }
   position: relative;
   flex: 0 0 clamp(16rem, 25vw, 22rem);
   scroll-snap-align: start;
-  border-radius: 16px; overflow: hidden; background: var(--bg-2);
-  border: 1px solid var(--line);
-  color: inherit;
+  border-radius: 16px; overflow: hidden; color: inherit;
+  /* Corner-lit 1px gradient rim (gold -> blue), no extra element: the fill sits
+     in padding-box, the gradient in border-box. */
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--bg-2), var(--bg-2)) padding-box,
+    linear-gradient(135deg in oklch,
+      color-mix(in oklch, var(--gold) 45%, transparent),
+      color-mix(in oklch, var(--blue) 34%, transparent)) border-box;
   display: flex; flex-direction: column;
-  transition: transform .45s var(--ease), box-shadow .45s var(--ease), border-color .45s var(--ease);
+  transition: transform .45s var(--ease), box-shadow .45s var(--ease);
 }
 .card__link { text-decoration: none; color: inherit; display: flex; flex-direction: column; flex: 1; }
-.card:hover { transform: translateY(-6px); box-shadow: 0 22px 48px -20px rgb(32 41 90 / .38); border-color: transparent; }
+.card:hover { transform: translateY(-6px); box-shadow: 0 22px 48px -20px rgb(32 41 90 / .4); }
 
 .card__fav {
   position: absolute; z-index: 2; inset-block-start: .55rem; inset-inline-end: .55rem;
@@ -890,3 +940,58 @@ section[id] { scroll-margin-top: 84px; }
 .drawer__mega .mega__col a { text-decoration: none; color: var(--body); font-size: .86rem; }
 .drawer__mega .mega__col a:active { color: var(--blue); }
 body.drawer-open { overflow: hidden; }
+
+/* ═══════════════════════ theme depth pass ═══════════════════════ */
+
+/* Gold keyline where a light section meets a dark one — a single lit seam. */
+.sec--dark, .sec--news { box-shadow: inset 0 1px 0 color-mix(in oklab, var(--gold) 22%, transparent); }
+
+/* Lit-rim glow on the dark "why" cards on hover. */
+.card2:hover {
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--gold) 30%, transparent),
+              0 24px 60px -30px color-mix(in oklab, var(--gold) 22%, transparent);
+}
+
+/* One-word gold foil (used sparingly — a single accent word, never body copy). */
+.grad-gold {
+  color: var(--gold-300);
+  background: linear-gradient(180deg in oklch, #ffe89a 0%, var(--gold) 52%, #d9a017 100%);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+/* ── ambient aurora on the flat dark fields (NOT the photo sections) ──
+   Compositor-only radial glows drifting via transform — softness is free from
+   the gradient falloff, so no filter:blur (that is the perf trick). A static
+   SVG-noise grain kills banding and adds editorial texture at zero motion cost.
+   Never behind the hero or band: an aurora behind a photo is noise on noise. */
+.sec--dark, .sec--news, .ftr { position: relative; overflow: hidden; isolation: isolate; }
+.sec--dark > *, .sec--news > *, .ftr > * { position: relative; z-index: 1; }
+
+.sec--dark::before, .sec--news::before, .ftr::before {
+  content: ""; position: absolute; inset: -20%; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(38% 46% at 18% 22%, color-mix(in oklch, var(--blue) 46%, transparent), transparent 70%),
+    radial-gradient(44% 52% at 82% 30%, color-mix(in oklch, var(--navy) 72%, transparent), transparent 72%),
+    radial-gradient(34% 42% at 66% 88%, color-mix(in oklch, var(--gold) 16%, transparent), transparent 70%);
+  animation: ambient-drift 34s ease-in-out infinite alternate;
+  animation-play-state: paused; /* JS runs it only while on-screen */
+  will-change: transform;
+}
+/* Footer stays gold-free — gold behind .6-alpha links would dip contrast. */
+.ftr::before {
+  background:
+    radial-gradient(40% 50% at 15% 20%, color-mix(in oklch, var(--blue) 40%, transparent), transparent 72%),
+    radial-gradient(46% 54% at 85% 70%, color-mix(in oklch, var(--navy) 70%, transparent), transparent 74%);
+}
+.ambient-run::before { animation-play-state: running; }
+@keyframes ambient-drift { to { transform: translate3d(2.5%, -2%, 0) scale(1.08); } }
+
+.sec--dark::after, .sec--news::after, .ftr::after {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  opacity: .05; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sec--dark::before, .sec--news::before, .ftr::before { animation: none; }
+}
