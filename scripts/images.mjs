@@ -65,9 +65,11 @@ async function emit(name, input, widths = WIDTHS) {
       made++;
     }
 
-    // JPEG floor for the widest only — the <picture> last resort.
-    const widest = Math.max(...widths.filter((x) => x <= meta.width));
-    if (w === widest) {
+    // JPEG floor — the <picture> last resort for the (rare) no-AVIF/WebP client.
+    // Capped at 1920 so a 2560 hero doesn't ship a ~700KB fallback nobody needs.
+    const jpgTiers = widths.filter((x) => x <= meta.width && x <= 1920);
+    const jpgWidest = jpgTiers.length ? Math.max(...jpgTiers) : Math.min(meta.width, Math.max(...widths));
+    if (w === jpgWidest) {
       await base.clone().jpeg({ quality: 76, mozjpeg: true }).toFile(path.join(OUT, `${name}-${w}.jpg`));
       made++;
     }
@@ -77,9 +79,14 @@ async function emit(name, input, widths = WIDTHS) {
 
 await mkdir(OUT, { recursive: true });
 
+// The hero and band are full-bleed and now sourced at 4K-6K, so they get a
+// 2560 tier for crisp rendering on 4K and retina displays. The rest cap at 1920.
+const BIG = new Set(['hero-coast', 'hero-coast-2']);
+const HIRES_WIDTHS = [640, 1024, 1600, 1920, 2560];
+
 console.log('Editorial art…');
 for (const [name, src] of Object.entries(PICKS)) {
-  const r = await emit(name, path.join(SRC, src));
+  const r = await emit(name, path.join(SRC, src), BIG.has(name) ? HIRES_WIDTHS : WIDTHS);
   console.log(`  ${name.padEnd(16)} ${r.missing ? 'MISSING SOURCE' : r.made + ' files'}`);
 }
 
