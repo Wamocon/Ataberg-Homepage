@@ -138,6 +138,13 @@ function splitLines(el) {
   });
 }
 
+// The mask (.line { overflow: hidden }) exists only to hide each line while it
+// rises. Once it has landed the clip must be released, or a tight heading
+// line-height crops tall glyphs at rest: the breve on ğ, Polish accents, and
+// descenders. Reveal on complete (and eagerly on the first line's rise, so the
+// resting lines in a stagger are never left cropped).
+const unclip = (inner) => { if (inner.parentElement) inner.parentElement.style.overflow = 'visible'; };
+
 function animateSplit(el) {
   const inners = splitLines(el);
   gsap.from(inners, {
@@ -146,6 +153,8 @@ function animateSplit(el) {
     ease: 'expo.out',
     stagger: 0.07,
     scrollTrigger: { trigger: el, start: 'top 88%' },
+    // Release each line's clip as its own rise finishes.
+    onComplete: () => inners.forEach(unclip),
   });
 }
 
@@ -182,6 +191,7 @@ function resplit(el, text) {
   if (REDUCED) return;
   const inners = splitLines(el);
   gsap.set(inners, { yPercent: 0 });
+  inners.forEach(unclip); // lands in place, so release the clip immediately
 }
 
 /* ───────────────────────── magnetic CTAs ─────────────────────────
