@@ -1,7 +1,10 @@
 /* ============================================================
    Ataberk Estate — homepage
-   Palette consolidated from the live theme's 5 near-duplicate blues
-   and 2 yellows down to 4 tokens. See ANALYSIS.md §2.4.
+   Theme: "warm editorial luxury" — ivory & cream paper, espresso ink, a
+   terracotta accent and a muted-brass jewel over dark-walnut bands. The core
+   token NAMES (--navy / --blue / --gold) are kept as semantic ROLES
+   (dark-surface / warm-accent / brass-highlight) so the whole sheet re-skins
+   from :root. See ANALYSIS.md §2.4.
    ============================================================ */
 
 /* Self-hosted, not fonts.gstatic.com. Two reasons, both load-bearing:
@@ -20,16 +23,19 @@
 }
 
 :root {
-  --navy:  #20295a;
-  --blue:  #145c9a;
-  --gold:  #fecf3d;
-  --logo:  #2e7ec4;
+  /* Core roles (names kept for a clean re-skin):
+       --navy = the dark surface   --blue = the warm accent/link   --gold = brass */
+  --navy:  #2b2118;   /* dark walnut — dark sections, footer, band, active tab */
+  --blue:  #9a4a28;   /* terracotta link/label (5.9:1 on ivory) */
+  --gold:  #b8973f;   /* muted brass — the jewel accent */
+  --logo:  #b5623a;   /* terracotta hover-line */
 
-  --ink:   #0e1330;
-  --body:  #4a5170;
-  --line:  #e3e7f2;
-  --bg:    #ffffff;
-  --bg-2:  #f6f8fc;
+  --ink:   #241c16;   /* espresso — headings + darkest text */
+  --body:  #574c42;   /* warm taupe body (7:1 on ivory) */
+  --line:  #e7ded0;   /* warm sand hairline */
+  --bg:    #faf6ef;   /* ivory page */
+  --bg-2:  #f3ece0;   /* cream — alt sections, cards, inputs, message bubbles */
+  --paper: #fffdf9;   /* warm near-white — elevated surfaces (mega/drawer/assistant) */
 
   --fs-display: clamp(2.75rem, 7.5vw, 6.5rem);
   --fs-h2:      clamp(1.9rem, 3.6vw, 3.1rem);
@@ -41,29 +47,34 @@
 
   --font: 'Inter var', 'Inter fallback', ui-sans-serif, system-ui, 'Open Sans', 'Segoe UI', Roboto, sans-serif;
 
-  /* ── extended palette — builds on the 5 brand tokens, never replaces them.
-     Supporting sea/turquoise (the Mediterranean) and warm sand are low-chroma
-     so navy + gold still carry the brand. 60/30/10: navy structure / neutral
-     breathing room / <=10% gold. Gold does one job per viewport. */
-  --navy-800: #2f3d6e;   /* raised navy */
-  --navy-700: #425490;   /* button/gradient depth */
-  --navy-200: #cfdcff;   /* muted text ON DARK */
-  --panel:    #141a44;   /* deep navy surface */
+  /* ── terracotta ramp (the warm accent) ── */
+  --terra:     #b5623a;  /* accent / hover-line */
+  --terra-500: #b35a30;  /* CTA gradient top   (4.7:1 white) */
+  --terra-700: #97421e;  /* CTA gradient base  (6.7:1 white) */
+  --terra-300: #e3a884;  /* terracotta ON DARK (accent text on walnut) */
 
-  --sea:      #008181;   /* teal accent on white (4.7:1) */
-  --sea-700:  #006566;   /* teal text on white (6.9:1) */
-  --sea-300:  #8dd7d6;   /* teal accent ON DARK */
+  /* ── extended surfaces + ramps — warm-neutral so terracotta + brass carry
+     the accent. 60/30/10: ivory/cream structure / warm breathing room /
+     <=10% terracotta + brass. Brass does one job per viewport. */
+  --navy-800: #372a1e;   /* raised walnut */
+  --navy-700: #4a3626;   /* walnut gradient depth */
+  --navy-200: #d8c9b8;   /* muted text ON DARK */
+  --panel:    #201811;   /* deepest walnut surface */
 
-  --sand-50:  #faf6f1;   /* warm page-bg alt */
-  --sand-100: #f2ece3;   /* warm card/band */
-  --sand-600: #826c4f;   /* warm caption on white (5.0:1) */
+  --sea:      #b5623a;   /* legacy tokens → terracotta so strays stay in palette */
+  --sea-700:  #9a4a28;
+  --sea-300:  #e3a884;
 
-  --gold-300: #e5c467;   /* softened gold text ON DARK */
-  --gold-500: #cca200;   /* richer gold for gradients/hover */
-  --gold-600: #896c00;   /* accessible gold TEXT on white (5.0:1) */
+  --sand-50:  #faf6ef;   /* warm page-bg alt */
+  --sand-100: #f3ece0;   /* warm card/band */
+  --sand-600: #826c4f;   /* warm caption on ivory (5.0:1) */
 
-  --on-dark:       #ecedef;              /* body on ink (15.5:1) */
-  --on-dark-muted: var(--navy-200);      /* muted on ink */
+  --gold-300: #cbb079;   /* brass ON DARK (7.5:1 on walnut) */
+  --gold-500: #a5842f;   /* richer brass for gradients/hover */
+  --gold-600: #6f5a2c;   /* accessible brass TEXT on ivory (6.2:1) */
+
+  --on-dark:       #efe7db;              /* warm off-white body on walnut */
+  --on-dark-muted: var(--navy-200);      /* muted on walnut */
   --line-dark:     rgb(255 255 255 / .12);
 }
 
@@ -123,7 +134,7 @@ a { color: inherit; }
 .btn {
   --fg-btn: #fff;
   display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
-  background: linear-gradient(180deg in oklch, var(--navy-700), var(--navy));
+  background: linear-gradient(180deg in oklch, var(--terra-500), var(--terra-700));
   color: var(--fg-btn);
   border: 0; border-radius: 100px;
   padding: .85rem 1.6rem;
@@ -131,13 +142,13 @@ a { color: inherit; }
   cursor: pointer; text-decoration: none; white-space: nowrap;
   transition: transform .3s var(--ease), box-shadow .3s var(--ease), filter .3s var(--ease);
 }
-.btn:hover { transform: translateY(-2px); box-shadow: 0 12px 28px -10px rgb(32 41 90 / .55); filter: brightness(1.06); }
+.btn:hover { transform: translateY(-2px); box-shadow: 0 12px 28px -10px rgb(151 66 30 / .5); filter: brightness(1.06); }
 .btn:active { transform: translateY(0); }
 .btn--gold {
   --fg-btn: var(--ink);
-  background: linear-gradient(180deg in oklch, #ffe08a 0%, var(--gold) 52%, var(--gold-500) 100%);
+  background: linear-gradient(180deg in oklch, #e9cf8f 0%, var(--gold) 52%, var(--gold-500) 100%);
 }
-.btn--gold:hover { box-shadow: 0 12px 28px -10px rgb(254 207 61 / .7); }
+.btn--gold:hover { box-shadow: 0 12px 28px -10px rgb(184 151 63 / .6); }
 .btn--ghost { background: transparent; --fg-btn: currentColor; border: 1px solid currentColor; }
 .btn--ghost:hover { filter: none; }
 .btn--ghost:hover { box-shadow: none; }
@@ -164,7 +175,7 @@ a { color: inherit; }
 /* The logo wordmark is white-on-transparent — it vanishes on light ground.
    currentColor on the text lets it invert once the header pins. */
 .hdr[data-pinned] {
-  background: rgb(255 255 255 / .86);
+  background: rgb(250 246 239 / .86);
   backdrop-filter: blur(14px) saturate(1.5);
   color: var(--ink);
   padding-block: .6rem;
@@ -282,17 +293,17 @@ a { color: inherit; }
 .eyebrow {
   font-size: .78rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase;
   opacity: .95; margin-block-end: 1.1rem;
-  text-shadow: 0 1px 12px rgb(10 14 36 / .8);
+  text-shadow: 0 1px 12px rgb(28 18 10 / .8);
 }
 .display {
   font-size: var(--fs-display); font-weight: 800; letter-spacing: -.045em;
   margin-block-end: 1.15rem;
-  text-shadow: 0 2px 40px rgb(10 14 36 / .55);
+  text-shadow: 0 2px 40px rgb(28 18 10 / .55);
 }
 .lede {
   font-size: var(--fs-lede); max-width: 46ch; margin-inline: auto;
   opacity: 1; text-wrap: pretty;
-  text-shadow: 0 1px 16px rgb(10 14 36 / .85);
+  text-shadow: 0 1px 16px rgb(28 18 10 / .85);
 }
 
 /* Split-text rig. The mask hides each line until it rises into place. */
@@ -392,7 +403,7 @@ a { color: inherit; }
 }
 .tab.is-on .tab__n { opacity: .75; color: var(--gold); }
 .sec--dark .tab { border-color: rgb(255 255 255 / .22); }
-.sec--dark .tab.is-on { background: #fff; color: var(--ink); border-color: #fff; }
+.sec--dark .tab.is-on { background: var(--paper); color: var(--ink); border-color: var(--paper); }
 
 /* pointer-events:none is load-bearing, not tidiness: this is a full-width strip
    sitting over the hero, and without it the scroll hint swallows clicks meant
@@ -454,7 +465,7 @@ a { color: inherit; }
   transition: transform .45s var(--ease), box-shadow .45s var(--ease);
 }
 .card__link { text-decoration: none; color: inherit; display: flex; flex-direction: column; flex: 1; }
-.card:hover { transform: translateY(-6px); box-shadow: 0 22px 48px -20px rgb(32 41 90 / .4); }
+.card:hover { transform: translateY(-6px); box-shadow: 0 22px 48px -20px rgb(60 42 26 / .4); }
 
 .card__fav {
   position: absolute; z-index: 2; inset-block-start: .55rem; inset-inline-end: .55rem;
@@ -539,7 +550,7 @@ a { color: inherit; }
   transition: border-color .25s, background .25s;
   resize: vertical;
 }
-.form__row input:focus, .form__row textarea:focus { background: #fff; border-color: var(--logo); }
+.form__row input:focus, .form__row textarea:focus { background: var(--paper); border-color: var(--logo); }
 .form__row input[aria-invalid='true'] { border-color: #d84a4a; }
 .form__note { font-size: .86rem; min-height: 1.3em; }
 .form__note[data-ok] { color: #1c7a4a; }
@@ -656,7 +667,7 @@ a { color: inherit; }
   display: inline-flex; align-items: center; gap: .5rem;
   background: var(--navy); color: #fff; border: 0; border-radius: 100px;
   padding: .85rem 1.3rem; font: inherit; font-size: .9rem; font-weight: 600; cursor: pointer;
-  box-shadow: 0 12px 32px -10px rgb(32 41 90 / .7);
+  box-shadow: 0 12px 32px -10px rgb(60 42 26 / .7);
 }
 .ai-fab span { color: var(--gold); }
 .ai-fab[hidden] { display: none; }
@@ -665,8 +676,8 @@ a { color: inherit; }
   position: fixed; z-index: 81; inset-block-end: 1.2rem; inset-inline-end: 1.2rem;
   width: min(24rem, calc(100vw - 2.4rem)); height: min(30rem, calc(100svh - 2.4rem));
   display: flex; flex-direction: column;
-  background: #fff; border: 1px solid var(--line); border-radius: 16px; overflow: hidden;
-  box-shadow: 0 30px 70px -24px rgb(14 19 48 / .5);
+  background: var(--paper); border: 1px solid var(--line); border-radius: 16px; overflow: hidden;
+  box-shadow: 0 30px 70px -24px rgb(40 28 16 / .5);
 }
 .ai[hidden] { display: none; }
 .ai__bar { display: flex; align-items: center; justify-content: space-between; padding: .85rem 1rem; background: var(--navy); color: #fff; }
@@ -704,7 +715,7 @@ a { color: inherit; }
 .ai__chips { display: flex; flex-wrap: wrap; gap: .35rem; }
 .ai__chips button {
   font: inherit; font-size: .78rem; cursor: pointer;
-  background: #fff; color: var(--blue); border: 1px solid var(--line);
+  background: var(--paper); color: var(--blue); border: 1px solid var(--line);
   border-radius: 100px; padding: .38rem .7rem;
   transition: border-color .25s, background .25s;
 }
@@ -818,8 +829,8 @@ section[id] { scroll-margin-top: 84px; }
 .band__scrim {
   position: absolute; inset: 0; pointer-events: none;
   background:
-    linear-gradient(180deg, rgb(10 14 36 / .55) 0%, rgb(10 14 36 / .25) 40%, rgb(10 14 36 / .55) 100%),
-    radial-gradient(80% 70% at 50% 50%, rgb(10 14 36 / .35) 0%, rgb(10 14 36 / .6) 100%);
+    linear-gradient(180deg, rgb(28 18 10 / .55) 0%, rgb(28 18 10 / .25) 40%, rgb(28 18 10 / .55) 100%),
+    radial-gradient(80% 70% at 50% 50%, rgb(28 18 10 / .35) 0%, rgb(28 18 10 / .6) 100%);
 }
 .band__inner {
   position: relative; z-index: 2; text-align: center; color: #fff;
@@ -832,12 +843,12 @@ section[id] { scroll-margin-top: 84px; }
 .band__h {
   color: #fff; font-size: clamp(2rem, 4.6vw, 3.6rem); font-weight: 800;
   letter-spacing: -.03em; margin-block-end: 1.2rem;
-  text-shadow: 0 2px 30px rgb(10 14 36 / .5);
+  text-shadow: 0 2px 30px rgb(28 18 10 / .5);
 }
 .band__p {
   font-size: var(--fs-lede); line-height: 1.6; opacity: .92; text-wrap: pretty;
   max-width: 44ch; margin-inline: auto;
-  text-shadow: 0 1px 14px rgb(10 14 36 / .7);
+  text-shadow: 0 1px 14px rgb(28 18 10 / .7);
 }
 
 /* ── richer "why" cards ──────────────────────────────────── */
@@ -853,7 +864,7 @@ section[id] { scroll-margin-top: 84px; }
   background: linear-gradient(90deg, var(--gold), transparent);
   transform: scaleX(0); transform-origin: 0 50%; transition: transform .6s var(--ease);
 }
-.card2:hover { transform: translateY(-5px); border-color: rgb(254 207 61 / .4); background: linear-gradient(180deg, rgb(255 255 255 / .1), rgb(255 255 255 / .04)); }
+.card2:hover { transform: translateY(-5px); border-color: rgb(184 151 63 / .4); background: linear-gradient(180deg, rgb(255 255 255 / .1), rgb(255 255 255 / .04)); }
 .card2:hover::before { transform: scaleX(1); }
 .card2__n { font-size: 1.4rem; font-weight: 800; letter-spacing: 0; color: var(--gold); opacity: .9; font-variant-numeric: tabular-nums; }
 .card2 h3 { margin-block: .8rem .55rem; }
@@ -886,9 +897,9 @@ section[id] { scroll-margin-top: 84px; }
 .mega {
   position: fixed; inset-inline: var(--pad); inset-block-start: 4.6rem;
   z-index: 95;
-  background: #fff; color: var(--ink);
+  background: var(--paper); color: var(--ink);
   border: 1px solid var(--line); border-radius: 18px;
-  box-shadow: 0 32px 64px -24px rgb(14 19 48 / .35);
+  box-shadow: 0 32px 64px -24px rgb(40 28 16 / .35);
   padding: clamp(1.5rem, 3vw, 2.4rem);
   opacity: 0; transform: translateY(-10px); pointer-events: none;
   transition: opacity .3s var(--ease), transform .3s var(--ease);
@@ -920,15 +931,15 @@ section[id] { scroll-margin-top: 84px; }
 }
 
 /* ── mobile drawer ───────────────────────────────────────── */
-.drawer { position: fixed; inset: 0; z-index: 100; background: rgb(14 19 48 / 0); transition: background .4s var(--ease); }
-.drawer[data-open] { background: rgb(14 19 48 / .5); backdrop-filter: blur(2px); }
+.drawer { position: fixed; inset: 0; z-index: 100; background: rgb(40 28 16 / 0); transition: background .4s var(--ease); }
+.drawer[data-open] { background: rgb(40 28 16 / .5); backdrop-filter: blur(2px); }
 .drawer__panel {
   position: absolute; inset-block: 0; inset-inline-end: 0;
   width: min(90%, 23rem); height: 100%; overflow-y: auto;
-  background: #fff; color: var(--ink);
+  background: var(--paper); color: var(--ink);
   padding: 5.5rem var(--pad) 2.5rem;
   transform: translateX(100%); transition: transform .4s var(--ease);
-  box-shadow: -20px 0 60px -20px rgb(14 19 48 / .4);
+  box-shadow: -20px 0 60px -20px rgb(40 28 16 / .4);
   display: flex; flex-direction: column; gap: 1.6rem;
 }
 .drawer[data-open] .drawer__panel { transform: none; }
@@ -970,9 +981,9 @@ body.drawer-open { overflow: hidden; }
 .sec--dark::before, .sec--news::before, .ftr::before {
   content: ""; position: absolute; inset: -20%; z-index: 0; pointer-events: none;
   background:
-    radial-gradient(38% 46% at 18% 22%, color-mix(in oklch, var(--blue) 46%, transparent), transparent 70%),
-    radial-gradient(44% 52% at 82% 30%, color-mix(in oklch, var(--navy) 72%, transparent), transparent 72%),
-    radial-gradient(34% 42% at 66% 88%, color-mix(in oklch, var(--gold) 16%, transparent), transparent 70%);
+    radial-gradient(38% 46% at 18% 22%, color-mix(in oklch, var(--terra) 30%, transparent), transparent 70%),
+    radial-gradient(46% 54% at 82% 26%, color-mix(in oklch, var(--gold) 15%, transparent), transparent 72%),
+    radial-gradient(40% 46% at 62% 92%, color-mix(in oklch, #7a3b1e 42%, transparent), transparent 72%);
   animation: ambient-drift 34s ease-in-out infinite alternate;
   animation-play-state: paused; /* JS runs it only while on-screen */
   will-change: transform;
@@ -980,8 +991,8 @@ body.drawer-open { overflow: hidden; }
 /* Footer stays gold-free — gold behind .6-alpha links would dip contrast. */
 .ftr::before {
   background:
-    radial-gradient(40% 50% at 15% 20%, color-mix(in oklch, var(--blue) 40%, transparent), transparent 72%),
-    radial-gradient(46% 54% at 85% 70%, color-mix(in oklch, var(--navy) 70%, transparent), transparent 74%);
+    radial-gradient(40% 50% at 15% 20%, color-mix(in oklch, var(--terra) 24%, transparent), transparent 72%),
+    radial-gradient(46% 54% at 85% 70%, color-mix(in oklch, #7a3b1e 34%, transparent), transparent 74%);
 }
 .ambient-run::before { animation-play-state: running; }
 @keyframes ambient-drift { to { transform: translate3d(2.5%, -2%, 0) scale(1.08); } }
