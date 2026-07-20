@@ -3,7 +3,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import { LISTINGS, RATES, TABS } from './listings.js';
 import { ARTICLE_TABS } from './footer.js';
-import { cardHTML, articlesHTML, esc, setLang, t, quickRowHTML, moreHTML, footerHTML } from './render.js';
+import { cardHTML, articlesHTML, esc, setLang, t, quickRowHTML, moreHTML, footerHTML, megaHTML, drawerHTML } from './render.js';
 import { makeT, LANGS, DEFAULT_LANG } from './i18n.js';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -36,6 +36,52 @@ if (!REDUCED) {
     end: 99999,
     onToggle: (s) => hdr.toggleAttribute('data-pinned', s.isActive),
   });
+}
+
+/* ───────────────────────── nav: mega-menu + drawer ─────────────────────────
+   The Properties dropdown (desktop) and the full off-canvas menu (mobile, where
+   the inline nav is hidden). Both are prerendered; a hidden attribute keeps them
+   safe with no JS, and data-open drives the transition. */
+{
+  // A close animation needs the element to stay displayed through the fade, so
+  // we drop the hidden attribute on open and restore it after the transition.
+  const panel = (el, on, ms) => {
+    if (on) { el.hidden = false; requestAnimationFrame(() => el.setAttribute('data-open', '')); }
+    else { el.removeAttribute('data-open'); setTimeout(() => { if (!el.hasAttribute('data-open')) el.hidden = true; }, ms); }
+  };
+
+  const megaToggle = $('[data-mega-toggle]');
+  const mega = $('[data-mega]');
+  let megaOn = false;
+  const setMega = (on) => { megaOn = on; megaToggle.setAttribute('aria-expanded', String(on)); panel(mega, on, 320); };
+  megaToggle.addEventListener('click', (e) => { e.stopPropagation(); setMega(!megaOn); });
+  mega.addEventListener('click', (e) => { if (e.target.closest('a')) setMega(false); else e.stopPropagation(); });
+  document.addEventListener('click', () => { if (megaOn) setMega(false); });
+
+  const burger = $('[data-burger]');
+  const drawer = $('[data-drawer]');
+  let drawerOn = false;
+  const setDrawer = (on) => {
+    drawerOn = on;
+    burger.setAttribute('aria-expanded', String(on));
+    document.body.classList.toggle('drawer-open', on);
+    panel(drawer, on, 420);
+  };
+  burger.addEventListener('click', () => setDrawer(!drawerOn));
+  drawer.addEventListener('click', (e) => {
+    // overlay tap, a nav link, or a mega link all dismiss the drawer
+    if (e.target === drawer || e.target.closest('[data-drawer-link], .drawer__mega a')) setDrawer(false);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    if (megaOn) setMega(false);
+    if (drawerOn) setDrawer(false);
+  });
+
+  // Re-render both when the language changes (their headings are baked at render
+  // time, not swapped via data-i18n).
+  window.__renderNav = () => { mega.innerHTML = megaHTML(); $('.drawer__panel').innerHTML = drawerHTML(); };
 }
 
 /* ───────────────────────── split text ─────────────────────────
@@ -593,6 +639,7 @@ $$('[data-count]').forEach((el) => {
     more.innerHTML = moreHTML();
     more.hidden = !wasOpen;
     $('[data-ftr]').innerHTML = footerHTML();
+    window.__renderNav?.();
     repaintSearch();
     repaintTabs();
     repaintArticles();

@@ -11,7 +11,7 @@
  * at all.
  */
 import { LISTINGS, TABS, RATES } from './listings.js';
-import { FOOTER, FOOTER_COMBOS, ARTICLES, ARTICLE_TABS } from './footer.js';
+import { FOOTER, FOOTER_COMBOS, MEGA, ARTICLES, ARTICLE_TABS } from './footer.js';
 import * as F from './filters.js';
 import { makeT, DEFAULT_LANG } from './i18n.js';
 import LISTING_I18N from './listing-i18n.json';
@@ -180,7 +180,38 @@ export const moreHTML = () => [
 ].join('');
 
 /** Everything the build injects, keyed by the placeholder it replaces. */
+/* ── header mega-menu + mobile drawer ─────────────────────
+   The Properties dropdown (desktop) and the full mobile menu, both built from
+   the MEGA columns so they never drift apart. */
+const megaColsHTML = () =>
+  MEGA.map((col) => `
+    <div class="mega__col">
+      <h3>${esc(t(col.k))}</h3>
+      <ul>${col.links.map((l) => `<li><a href="${l.href}">${esc(l.label)}</a></li>`).join('')}</ul>
+    </div>`).join('');
+
+export const megaHTML = () => `
+  <div class="mega__grid">${megaColsHTML()}</div>
+  <a class="mega__all" href="/turkey">${esc(t('listings.all'))} <span aria-hidden="true">&rarr;</span></a>`;
+
+// Mobile drawer: the primary nav, then the same Properties columns, then the
+// language and currency controls, so a phone finally has a full menu.
+export const drawerHTML = () => {
+  const nav = [
+    ['#listings', 'nav.properties'], ['#why', 'nav.why'], ['#trust', 'nav.about'],
+    ['#reviews', 'nav.reviews'], ['#contact', 'nav.contact'],
+  ];
+  return `
+    <nav class="drawer__nav" aria-label="Primary">
+      ${nav.map(([href, k]) => `<a href="${href}" data-drawer-link data-i18n="${k}">${esc(t(k))}</a>`).join('')}
+    </nav>
+    <div class="drawer__mega">${megaColsHTML()}</div>
+    <a class="btn btn--gold btn--full" href="#contact" data-drawer-link data-i18n="nav.getInTouch">${esc(t('nav.getInTouch'))}</a>`;
+};
+
 export const SLOTS = () => ({
+  '<!--@mega-->': megaHTML(),
+  '<!--@drawer-->': drawerHTML(),
   '<!--@tabs-->': tabsHTML(),
   '<!--@rail-->': railHTML(TABS[0].key),
   '<!--@atabs-->': articleTabsHTML(),

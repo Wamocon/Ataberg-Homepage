@@ -106,19 +106,34 @@ const missing = [];
 const usedHashes = new Set();
 const hashOf = (f) => createHash('md5').update(readFileSync(f)).digest('hex');
 
+// Prefer the high-res cover harvested from each listing's detail page (the
+// site's own og:image, 840-1200px) over the 420px homepage thumbnail. Same real
+// photo, ~2.5x the resolution. Falls back to the thumbnail where the detail page
+// 500s (see scripts/harvest-hires.mjs).
+const hires = existsSync('raw/hires-map.json')
+  ? JSON.parse(readFileSync('raw/hires-map.json', 'utf8'))
+  : {};
+
 for (const l of LISTINGS) {
-  const candidates = (photoOf[l.id] || []).map(local).filter(existsSync);
+  // High-res frames first (array of 850-1200px covers), then the 420px thumbs.
+  // The dedup below walks this list, so a duplicate-reference-number pair can
+  // each land a different high-res frame of the same building.
+  const candidates = [
+    ...(hires[l.id] || []).filter(existsSync),
+    ...(photoOf[l.id] || []).map(local).filter(existsSync),
+  ];
   if (!candidates.length) { missing.push(l.id); continue; }
 
   // Prefer the first frame whose pixels we have not already used as a cover.
-  let src = candidates.find((f) => !usedHashes.has(hashOf(f))) || candidates[0];
+  const src = candidates.find((f) => !usedHashes.has(hashOf(f))) || candidates[0];
   usedHashes.add(hashOf(src));
 
   const meta = await sharp(src).metadata();
-  const w = Math.min(640, meta.width);
+  const w = Math.min(1024, meta.width); // hi-res covers support a retina 1024
   if (w < 640) thin.push(`${l.id}(${meta.width}px)`);
 
-  const base = sharp(src).resize(w, null, { withoutEnlargement: true });
+  // Cover-crop to the card's 3:2 so a wide 1.9:1 og:image never letterboxes.
+  const base = sharp(src).resize(w, Math.round(w * 2 / 3), { fit: 'cover', position: 'attention' });
   await base.clone().webp({ quality: 78 }).toFile(path.join(OUT, `${l.img}.webp`));
   await base.clone().avif({ quality: 55, effort: 4 }).toFile(path.join(OUT, `${l.img}.avif`));
   ok++;

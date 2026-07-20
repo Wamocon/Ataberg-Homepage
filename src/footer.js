@@ -59,6 +59,37 @@ const priceLinks = bands.map(([a, b]) => ({
   href: `/turkey/apartments/${a}--${b}`,
 }));
 
+/**
+ * Header "Properties" mega-menu. A concise, high-intent slice of the footer's
+ * link tree — the districts and types a buyer actually browses by — grouped
+ * into four columns with a translated heading each. Reused verbatim in the
+ * mobile drawer. The live site buries all of this; surfacing it from the header
+ * is the single biggest navigation win.
+ */
+export const MEGA = [
+  { k: 'ftr.alanya', links: linkify(alanya.slice(0, 9), '/turkey/alanya') },
+  {
+    k: 'ftr.other',
+    links: [
+      { label: 'Antalya', href: '/turkey/antalya' },
+      { label: 'Mersin', href: '/turkey/mersin' },
+      ...linkify(cities.slice(0, 5), '/turkey'),
+    ],
+  },
+  { k: 'ftr.byType', links: linkify(types, '/turkey') },
+  {
+    k: 'ftr.purpose',
+    links: [
+      { label: 'For citizenship', href: '/turkish-citizenship' },
+      { label: 'For a residence permit', href: '/turkey/vid-na-jitelstvo' },
+      { label: 'To let out', href: '/turkey/for-rent' },
+      { label: 'Sea view', href: '/turkey/sea-view' },
+      { label: 'Front line', href: '/pervaya-l-n-ya' },
+      { label: 'Resale', href: '/turkey/alanya/vtorichka' },
+    ],
+  },
+];
+
 export const FOOTER = [
   {
     k: 'ftr.alanya',
