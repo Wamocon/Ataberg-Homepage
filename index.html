@@ -35,6 +35,9 @@
   the font is on its critical path. Self-hosted and preloaded for that reason.
 -->
 <link rel="preload" as="font" type="font/woff2" href="/fonts/inter-latin.woff2" crossorigin>
+<!-- Latin-ext carries the Turkish glyphs (ğ ş İ …). Primary language is Turkish,
+     so nearly every heading needs it; preload to avoid a fallback-font flash. -->
+<link rel="preload" as="font" type="font/woff2" href="/fonts/inter-latin-ext.woff2" crossorigin>
 
 <!--
   The hero still gets fetchpriority=high — not as an LCP optimisation (it cannot
