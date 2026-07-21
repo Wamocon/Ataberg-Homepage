@@ -34,10 +34,7 @@
   the image a candidate, 900px == viewport does not). So LCP here is text, and
   the font is on its critical path. Self-hosted and preloaded for that reason.
 -->
-<link rel="preload" as="font" type="font/woff2" href="/fonts/inter-latin.woff2" crossorigin>
-<!-- Latin-ext carries the Turkish glyphs (ğ ş İ …). Primary language is Turkish,
-     so nearly every heading needs it; preload to avoid a fallback-font flash. -->
-<link rel="preload" as="font" type="font/woff2" href="/fonts/inter-latin-ext.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/inter.woff2" crossorigin fetchpriority="low">
 
 <!--
   The hero still gets fetchpriority=high — not as an LCP optimisation (it cannot
@@ -275,7 +272,9 @@
     <button class="results__clear" type="button" data-results-clear data-i18n="search.clear">Clear search</button>
   </div>
 
-  <div class="rail" data-rail>
+  <!-- data-lenis-prevent: on mobile the rail is a native horizontal scroller;
+       without this, Lenis swallows the touch drag and it will not swipe. -->
+  <div class="rail" data-rail data-lenis-prevent>
     <div class="rail__track" data-rail-track role="tabpanel" data-rail-panel><!--@rail--></div>
   </div>
 
@@ -296,7 +295,7 @@
   <div class="band__scrim" aria-hidden="true"></div>
   <div class="band__inner">
     <p class="band__eyebrow" data-fade data-i18n="band.eyebrow">The Turkish Mediterranean</p>
-    <h2 class="band__h" data-split data-i18n="band.h">Where the mountains meet the sea</h2>
+    <h2 class="band__h" data-scramble data-i18n="band.h">Where the mountains meet the sea</h2>
     <p class="band__p" data-fade data-i18n="band.p">Blue-flag beaches, a castle above the bay, and a warm coastline that draws buyers from across Europe. This is Alanya, and it is where our clients choose to live.</p>
   </div>
 </section>
@@ -333,7 +332,7 @@
     </article>
   </div>
   <p class="sec__foot sec__foot--cta">
-    Call us and a manager will talk it through and shortlist what actually fits you.
+    <span data-i18n="why.cta">Call us and a manager will talk it through and shortlist what actually fits you.</span>
     <a class="btn btn--gold" href="#contact" data-magnetic data-i18n="why.ctaBtn">Order a consultation</a>
   </p>
 </section>
@@ -346,10 +345,10 @@
   </div>
 
   <div class="stats" data-fade>
-    <div class="stat"><strong data-count="21">0</strong><span data-i18n="stat.years">years in Alanya</span></div>
-    <div class="stat"><strong data-count="6000">0</strong><span data-i18n="stat.sales">completed sales</span></div>
-    <div class="stat"><strong data-count="38">0</strong><span data-i18n="stat.people">people across three offices</span></div>
-    <div class="stat"><strong data-count="30000">0</strong><span data-i18n="stat.objects">properties on our books</span></div>
+    <div class="stat"><strong class="metallic" data-count="21">0</strong><span data-i18n="stat.years">years in Alanya</span></div>
+    <div class="stat"><strong class="metallic" data-count="6000">0</strong><span data-i18n="stat.sales">completed sales</span></div>
+    <div class="stat"><strong class="metallic" data-count="38">0</strong><span data-i18n="stat.people">people across two offices</span></div>
+    <div class="stat"><strong class="metallic" data-count="30000">0</strong><span data-i18n="stat.objects">properties on our books</span></div>
   </div>
 
   <div class="grid grid--3">
@@ -427,27 +426,27 @@
         <span class="quote__vidlabel" data-i18n="reviews.video">Video review</span>
       </a>
       <blockquote data-i18n="reviews.q1">We looked at a lot of agencies before we chose Ataberk. They showed us the apartment in Mahmutlar three times, answered every awkward question about the paperwork, and never once pushed us.</blockquote>
-      <figcaption><span class="quote__avatar" aria-hidden="true">MA</span><span class="quote__who"><strong>Marco and Anna</strong><span data-i18n="reviews.a1">Germany · bought in Mahmutlar · November 2023</span></span></figcaption>
+      <figcaption><span class="quote__avatar" aria-hidden="true">MA</span><span class="quote__who"><strong data-i18n="reviews.n1">Marco and Anna</strong><span data-i18n="reviews.a1">Germany · bought in Mahmutlar · November 2023</span></span></figcaption>
     </figure>
     <figure class="quote" data-fade>
       <blockquote data-i18n="reviews.q2">The manager did far more than sell me a flat. Natalya watched over the build for a whole year and answered every question along the way. Human, not just professional.</blockquote>
-      <figcaption><span class="quote__avatar" aria-hidden="true">R</span><span class="quote__who"><strong>Ramil</strong><span data-i18n="reviews.a2">Russia · bought off-plan · 2020</span></span></figcaption>
+      <figcaption><span class="quote__avatar" aria-hidden="true">R</span><span class="quote__who"><strong data-i18n="reviews.n2">Ramil</strong><span data-i18n="reviews.a2">Russia · bought off-plan · 2020</span></span></figcaption>
     </figure>
     <figure class="quote" data-fade>
       <blockquote data-i18n="reviews.q3">A team of real professionals. Thanks to them we bought an apartment near Cleopatra beach, in a complex with full hotel facilities.</blockquote>
-      <figcaption><span class="quote__avatar" aria-hidden="true">AO</span><span class="quote__who"><strong>Aleksandr and Olga</strong><span data-i18n="reviews.a3">Germany · bought near Cleopatra beach · 2019</span></span></figcaption>
+      <figcaption><span class="quote__avatar" aria-hidden="true">AO</span><span class="quote__who"><strong data-i18n="reviews.n3">Aleksandr and Olga</strong><span data-i18n="reviews.a3">Germany · bought near Cleopatra beach · 2019</span></span></figcaption>
     </figure>
     <figure class="quote" data-fade>
       <blockquote data-i18n="reviews.q4">After a month of searching on my own, I came to Ataberk. A proper video walkthrough, everything on WhatsApp, and the penthouse in Oba closed in five days. They even sorted the cleaning and the utilities afterwards.</blockquote>
-      <figcaption><span class="quote__avatar" aria-hidden="true">S</span><span class="quote__who"><strong>Svetlana</strong><span data-i18n="reviews.a4">Bought a penthouse in Oba · 2025 · via Yandex Maps</span></span></figcaption>
+      <figcaption><span class="quote__avatar" aria-hidden="true">S</span><span class="quote__who"><strong data-i18n="reviews.n4">Svetlana</strong><span data-i18n="reviews.a4">Bought a penthouse in Oba · 2025 · via Yandex Maps</span></span></figcaption>
     </figure>
     <figure class="quote" data-fade>
       <blockquote data-i18n="reviews.q5">From my first message to approval on a 2+1 in Cikcilli was four days. Every step explained, all in Russian, nothing left for me to chase.</blockquote>
-      <figcaption><span class="quote__avatar" aria-hidden="true">Y</span><span class="quote__who"><strong>Yana</strong><span data-i18n="reviews.a5">Bought in Cikcilli · 2025 · via Yandex Maps</span></span></figcaption>
+      <figcaption><span class="quote__avatar" aria-hidden="true">Y</span><span class="quote__who"><strong data-i18n="reviews.n5">Yana</strong><span data-i18n="reviews.a5">Bought in Cikcilli · 2025 · via Yandex Maps</span></span></figcaption>
     </figure>
     <figure class="quote" data-fade>
       <blockquote data-i18n="reviews.q6">I decided to fly to Turkey on a whim. Natalia found me a cosy apartment and looked after everything. Two brilliant months, and service I would recommend to anyone.</blockquote>
-      <figcaption><span class="quote__avatar" aria-hidden="true">I</span><span class="quote__who"><strong>Irina</strong><span data-i18n="reviews.a6">Alanya · 2025 · via Yandex Maps</span></span></figcaption>
+      <figcaption><span class="quote__avatar" aria-hidden="true">I</span><span class="quote__who"><strong data-i18n="reviews.n6">Irina</strong><span data-i18n="reviews.a6">Alanya · 2025 · via Yandex Maps</span></span></figcaption>
     </figure>
   </div>
   <p class="sec__foot"><a class="lnk" href="/testimonials" data-i18n="reviews.all">Read all testimonials<span aria-hidden="true">→</span></a></p>

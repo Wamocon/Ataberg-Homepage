@@ -15,6 +15,7 @@ import { FOOTER, MEGA, ARTICLES, ARTICLE_TABS } from './footer.js';
 import * as F from './filters.js';
 import { makeT, DEFAULT_LANG } from './i18n.js';
 import LISTING_I18N from './listing-i18n.json';
+import ARTICLE_I18N from './article-i18n.json';
 
 /**
  * Current language. The build renders English; the client calls setLang() when
@@ -40,8 +41,11 @@ export const esc = (s) =>
   String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
 /** Server-side default: EUR. The client re-renders prices once it knows the
- *  visitor's stored preference. */
-export const fmtEUR = (n) => `€${n.toLocaleString('en-GB')}`;
+ *  visitor's stored preference. Number grouping follows the active language, so
+ *  Turkish reads €150.000 (period), Russian/Polish 150 000, English 150,000. */
+const LOCALE = { en: 'en-GB', ru: 'ru-RU', pl: 'pl-PL', tr: 'tr-TR' };
+export const localeOf = (lang = LANG) => LOCALE[lang] || 'en-GB';
+export const fmtEUR = (n) => `€${n.toLocaleString(localeOf())}`;
 
 export function cardHTML(l, activeTab, isFav = false) {
   // The tag names the selection you are currently looking at, not the listing's
@@ -66,7 +70,7 @@ export function cardHTML(l, activeTab, isFav = false) {
             ${l.area ? `<span>${l.area}&nbsp;m²</span>` : ''}
             <span class="card__ref">#${l.id}</span>
           </div>
-          <span class="card__price" data-eur="${l.price}">${l.priceFrom ? t('card.from') : ''}${fmtEUR(l.price)}</span>
+          <span class="card__price" data-eur="${l.price}"${l.priceFrom ? ' data-from' : ''}>${l.priceFrom ? t('card.from') : ''}${fmtEUR(l.price)}</span>
         </div>
       </a>
       <button class="card__fav${isFav ? ' is-on' : ''}" type="button" data-fav="${l.id}"
@@ -92,11 +96,13 @@ export const tabsHTML = (active = TABS[0].key) =>
 const fmtDate = (d) =>
   new Date(d).toLocaleDateString(LANG === 'ru' ? 'ru-RU' : LANG === 'pl' ? 'pl-PL' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
+const artTitle = (a) => (LANG === 'en' ? a.title : ARTICLE_I18N[a.title]?.[LANG] || a.title);
+
 export const articlesHTML = (key) =>
   ARTICLES[key].map((a) => `
     <a class="art" href="${a.href}">
       <time datetime="${a.date}">${fmtDate(a.date)}</time>
-      <h3>${esc(a.title)}</h3>
+      <h3>${esc(artTitle(a))}</h3>
       <span class="art__go" aria-hidden="true">${esc(t('articles.read'))}</span>
     </a>`).join('');
 
@@ -124,6 +130,13 @@ const opts = (arr, sel) =>
     return `<option value="${esc(v)}"${v === sel ? ' selected' : ''}>${esc(label)}</option>`;
   }).join('');
 
+/** Localize a location option's visible label; the value stays internal. */
+const locLabel = (i) => {
+  if (i.startsWith('All of ')) return t('search.allOf') + i.slice(7);
+  if (i === 'Alanya centre') return 'Alanya ' + t('search.centre');
+  return i;
+};
+
 const fieldSel = (id, label, inner) => `
   <div class="quick__f">
     <label for="${id}">${esc(label)}</label>
@@ -135,8 +148,12 @@ export const quickRowHTML = () => [
   fieldSel('q-type', t('search.type'), opts(F.TYPES)),
   fieldSel('q-loc', t('search.where'),
     `<option value="">${esc(t('search.anywhere'))}</option>` +
-    F.LOCATIONS.map((g) => `<optgroup label="${esc(g.group)}">${g.items.map((i) => `<option>${esc(i)}</option>`).join('')}</optgroup>`).join('')),
-  fieldSel('q-rooms', t('search.rooms'), `<option value="">${esc(t('search.any'))}</option>${opts(F.ROOMS)}`),
+    // The option VALUE stays the internal string (locMatch keys off "All of X");
+    // only the visible LABEL is localized. Districts are proper nouns.
+    F.LOCATIONS.map((g) => `<optgroup label="${esc(g.group === 'Other' ? t('search.otherRegions') : g.group)}">${g.items.map((i) => `<option value="${esc(i)}">${esc(locLabel(i))}</option>`).join('')}</optgroup>`).join('')),
+  fieldSel('q-rooms', t('search.rooms'),
+    `<option value="">${esc(t('search.any'))}</option>` +
+    F.ROOMS.map((r) => `<option value="${esc(r)}">${esc(r.includes('and larger') ? r.replace('and larger', t('search.andLarger')) : r)}</option>`).join('')),
   `<div class="quick__f">
      <label for="q-max">${esc(t('search.upTo'))}</label>
      <select id="q-max" name="max" data-price-sel>

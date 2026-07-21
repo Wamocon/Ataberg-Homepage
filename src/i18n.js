@@ -85,6 +85,10 @@ export const T = {
   'search.none': { en: 'No exact match on this page. Adjust the filters, or tell us what you are after and we will find it.', ru: 'На этой странице точных совпадений нет. Измените фильтры или напишите, что ищете, и мы подберём.', pl: 'Na tej stronie brak dokładnych trafień. Prosimy zmienić filtry lub napisać, czego Państwo szukają, a my to znajdziemy.' },
   'search.clear': { en: 'Clear search', ru: 'Сбросить поиск', pl: 'Wyczyść wyniki' },
   'search.ask': { en: 'Tell us what you are after', ru: 'Напишите, что вы ищете', pl: 'Napisz, czego szukasz' },
+  'search.allOf': { en: 'All of ', tr: 'Tüm ', ru: 'Весь ', pl: 'Cała ' },
+  'search.centre': { en: 'centre', tr: 'merkez', ru: 'центр', pl: 'centrum' },
+  'search.andLarger': { en: 'and larger', tr: 've üzeri', ru: 'и больше', pl: 'i większe' },
+  'search.otherRegions': { en: 'Other', tr: 'Diğer', ru: 'Другое', pl: 'Inne' },
 
   // ── listings ──
   'listings.h2': { en: 'Our offers', ru: 'Наши предложения', pl: 'Nasze oferty' },
@@ -266,6 +270,14 @@ export const T = {
   },
   'reviews.a6': { en: 'Alanya · 2025 · via Yandex Maps', ru: 'Аланья · 2025 · Яндекс Карты', pl: 'Alanya · 2025 · Yandex Maps' },
   'reviews.all': { en: 'Read all testimonials', ru: 'Все отзывы', pl: 'Wszystkie opinie' },
+  // Reviewer names. Proper nouns, but the conjunction "and" and the script
+  // follow the language (a hard-coded "Marco and Anna" read as English in tr).
+  'reviews.n1': { en: 'Marco and Anna', tr: 'Marco ve Anna', ru: 'Марко и Анна', pl: 'Marco i Anna' },
+  'reviews.n2': { en: 'Ramil', tr: 'Ramil', ru: 'Рамиль', pl: 'Ramil' },
+  'reviews.n3': { en: 'Aleksandr and Olga', tr: 'Aleksandr ve Olga', ru: 'Александр и Ольга', pl: 'Aleksandr i Olga' },
+  'reviews.n4': { en: 'Svetlana', tr: 'Svetlana', ru: 'Светлана', pl: 'Svetlana' },
+  'reviews.n5': { en: 'Yana', tr: 'Yana', ru: 'Яна', pl: 'Yana' },
+  'reviews.n6': { en: 'Irina', tr: 'Irina', ru: 'Ирина', pl: 'Irina' },
 
   // ── visit / map ──
   'visit.h2': { en: 'Come and see us', ru: 'Приезжайте в гости', pl: 'Zapraszamy do nas' },

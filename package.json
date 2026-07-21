@@ -36,6 +36,7 @@
   "private": true,
   "devDependencies": {
     "dictionary-tr": "^2.0.0",
-    "nspell": "^2.1.5"
+    "nspell": "^2.1.5",
+    "subset-font": "^2.5.0"
   }
 }

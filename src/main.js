@@ -1,12 +1,13 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ScrambleTextPlugin } from 'gsap/ScrambleTextPlugin';
 import Lenis from 'lenis';
 import { LISTINGS, RATES, TABS } from './listings.js';
 import { ARTICLE_TABS } from './footer.js';
 import { cardHTML, articlesHTML, esc, setLang, t, quickRowHTML, moreHTML, footerHTML, megaHTML, drawerHTML } from './render.js';
 import { makeT, LANGS, DEFAULT_LANG } from './i18n.js';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin);
 
 const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -20,6 +21,10 @@ let inResultsMode = () => false; // true while search results replace the tabbed
 let reshowResults = () => {};    // re-render the current results in the active language
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+/* Number grouping follows the active language: tr 6.000 / €150.000, ru & pl
+   6 000, en 6,000. Read from <html lang> so it tracks the language switch. */
+const localeOf = () => LANGS.find((l) => l.code === document.documentElement.lang)?.locale || 'en-GB';
 
 /* ───────────────────────── smooth scroll ─────────────────────────
    Lenis drives ScrollTrigger. Skipped entirely under reduced motion —
@@ -162,6 +167,25 @@ $$('[data-split]').forEach((el) => {
   if (REDUCED) return;
   animateSplit(el);
 });
+
+/* Scramble-decode: each letter flickers through random glyphs, then locks to its
+   real value left to right, so the line "decodes" into place. Used once, on the
+   cinematic band heading over the parallax. The text is read at trigger time so
+   it decodes in whatever language is active. The chars pool includes Turkish
+   letters so the flicker stays in-script. Inert under reduced motion (the plain
+   text is already in the DOM). */
+const SCRAMBLE_CHARS = 'ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZabcçdefgğhıijklmnoöprsştuüvyz';
+if (!REDUCED) {
+  $$('[data-scramble]').forEach((el) => {
+    ScrollTrigger.create({
+      trigger: el, start: 'top 82%', once: true,
+      onEnter: () => gsap.to(el, {
+        duration: 1.5, ease: 'none',
+        scrambleText: { text: el.textContent, chars: SCRAMBLE_CHARS, speed: 0.5, revealDelay: 0.25, tweenLength: false },
+      }),
+    });
+  });
+}
 
 /* Hero copy intro — transform only, never opacity.
    The hero text is above the fold and drives LCP. A fade-from-transparent or a
@@ -335,7 +359,7 @@ const money = (() => {
   let cur = localStorage.getItem('ab-cur') || 'EUR';
   const fmt = (eur, c = cur) => {
     const v = eur * RATES.rate[c];
-    const n = new Intl.NumberFormat('en-GB', {
+    const n = new Intl.NumberFormat(localeOf(), {
       maximumFractionDigits: 0,
       minimumFractionDigits: 0,
     }).format(Math.round(v / (v > 100000 ? 500 : 100)) * (v > 100000 ? 500 : 100));
@@ -366,8 +390,10 @@ const favs = {
 
 function render() {
   $$('[data-eur]').forEach((el) => {
-    const from = el.textContent.startsWith('from ');
-    el.textContent = (from ? 'from ' : '') + money.fmt(Number(el.dataset.eur));
+    // data-from is language-agnostic; the old startsWith('from ') check dropped
+    // the localized prefix (tr "başlangıç fiyatı") on a currency change.
+    const from = el.hasAttribute('data-from');
+    el.textContent = (from ? t('card.from') : '') + money.fmt(Number(el.dataset.eur));
   });
 }
 
@@ -519,7 +545,7 @@ function render() {
    defensible figure. See ANALYSIS.md §2.1. */
 $$('[data-count]').forEach((el) => {
   const to = Number(el.dataset.count);
-  const nf = new Intl.NumberFormat('en-GB');
+  const nf = new Intl.NumberFormat(localeOf());
   if (REDUCED) { el.textContent = nf.format(to); return; }
   const o = { v: 0 };
   gsap.to(o, {
@@ -750,6 +776,8 @@ $$('[data-count]').forEach((el) => {
     repaintTabs();
     repaintArticles();
     render();
+    // Re-group the already-rolled counters in the new locale (6,000 -> 6.000).
+    $$('[data-count]').forEach((el) => { el.textContent = new Intl.NumberFormat(localeOf()).format(Number(el.dataset.count)); });
     // If the visitor was viewing search results, re-render them in the new
     // language instead of silently dropping them back to the default tab.
     if (wasResults) reshowResults();
