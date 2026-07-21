@@ -19,7 +19,7 @@ import path from 'node:path';
 
 const LAT = 36.5563221;
 const LNG = 31.977053;
-const ZOOM = 16;
+const ZOOM = 15;
 const OUT = 'public/img';
 const RAW = 'raw/orig/office-map.png';
 
@@ -31,7 +31,7 @@ const html = `<!doctype html><html><head><meta charset="utf-8">
 <script>
   const map = L.map('m', { zoomControl: false, attributionControl: false, keyboard: false, dragging: false })
     .setView([${LAT}, ${LNG}], ${ZOOM});
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
     maxZoom: 20, subdomains: 'abcd', detectRetina: true,
   }).addTo(map);
   window.__tiles = { loaded: 0, total: 0 };

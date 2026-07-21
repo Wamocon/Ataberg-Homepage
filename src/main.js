@@ -499,6 +499,16 @@ function render() {
 
   repaintTabs = () => paint(active, false, true);
 
+  // Rebuild the rail when the viewport crosses the 861px pin boundary (rotate,
+  // window drag). buildRail's guard otherwise only runs on a tab paint, so a
+  // desktop scrub-pin would persist and hold #listings fixed on the mobile
+  // layout — or a phone would miss the pin after growing to desktop width.
+  let wideRail = window.matchMedia('(min-width: 861px)').matches;
+  addEventListener('resize', () => {
+    const now = window.matchMedia('(min-width: 861px)').matches;
+    if (now !== wideRail) { wideRail = now; buildRail(); ScrollTrigger.refresh(); }
+  }, { passive: true });
+
   // Search results: replace the rail with the matching listings, drop the tab
   // highlight, and reveal a dismissible banner. Each card keeps its OWN primary
   // tag (l.tabs[0]) rather than borrowing the last active tab's, so a card never
@@ -662,7 +672,7 @@ $$('[data-count]').forEach((el) => {
   let active = ARTICLE_TABS[0].key;
 
   const fmtDate = (d) =>
-    new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    new Date(d).toLocaleDateString(localeOf(), { day: 'numeric', month: 'long', year: 'numeric' });
 
   // Article tabs and the first panel are prerendered — see render.js.
   function paint(key, initial = false) {
@@ -749,6 +759,9 @@ $$('[data-count]').forEach((el) => {
       const s = t(el.dataset.i18n);
       // Split headings have no text node left to write into — rebuild the rig.
       if (el.hasAttribute('data-split')) { resplit(el, s); continue; }
+      // A scramble heading mid-decode would otherwise lock to the OLD language;
+      // kill the tween and set the new text (a no-op kill if none is running).
+      if (el.hasAttribute('data-scramble')) { gsap.killTweensOf(el); el.textContent = s; continue; }
       // Keep any element children (the counter <strong>, link arrows) intact —
       // only the element's own text nodes are translated.
       if (el.children.length === 0) { el.textContent = s; continue; }
@@ -769,9 +782,17 @@ $$('[data-count]').forEach((el) => {
     const wasResults = inResultsMode();  // capture before repaintTabs clears it
     const more = $('[data-more]');
     const wasOpen = !more.hidden;
+    // Snapshot the visitor's search selections; rebuilding the form innerHTML for
+    // the new language would otherwise wipe every choice and the match count.
+    const sf = $('[data-search]');
+    const selVals = {}; $$('select', sf).forEach((s) => { selVals[s.id] = s.value; });
+    const checkedVals = new Set($$('input[type=checkbox]:checked', sf).map((c) => c.value));
     $('[data-quick-row]').innerHTML = quickRowHTML();
     more.innerHTML = moreHTML();
     more.hidden = !wasOpen;
+    // Restore the selections onto the freshly-rendered controls.
+    $$('select', sf).forEach((s) => { if (selVals[s.id] != null && selVals[s.id] !== '') s.value = selVals[s.id]; });
+    $$('input[type=checkbox]', sf).forEach((c) => { if (checkedVals.has(c.value)) c.checked = true; });
     $('[data-ftr]').innerHTML = footerHTML();
     window.__renderNav?.();
     repaintSearch();

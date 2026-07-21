@@ -94,7 +94,7 @@ export const tabsHTML = (active = TABS[0].key) =>
   }).join('');
 
 const fmtDate = (d) =>
-  new Date(d).toLocaleDateString(LANG === 'ru' ? 'ru-RU' : LANG === 'pl' ? 'pl-PL' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  new Date(d).toLocaleDateString(localeOf(), { day: 'numeric', month: 'long', year: 'numeric' });
 
 const artTitle = (a) => (LANG === 'en' ? a.title : ARTICLE_I18N[a.title]?.[LANG] || a.title);
 

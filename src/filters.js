@@ -32,7 +32,7 @@ export const LOCATIONS = [
   { group: 'Alanya', items: ['All of Alanya', 'Mahmutlar', 'Oba', 'Kestel', 'Tosmur', 'Kargıcak', 'Demirtaş', 'Avsallar', 'Payallar', 'Konaklı', 'Cikcilli', 'Alanya centre', 'Cleopatra', 'Gazipaşa', 'Türkler'] },
   { group: 'Antalya', items: ['All of Antalya', 'Konyaaltı', 'Lara', 'Muratpaşa', 'Kepez', 'Altıntaş', 'Belek', 'Kemer', 'Side'] },
   { group: 'Mersin', items: ['All of Mersin', 'Tece', 'Erdemli', 'Mezitli', 'Yenişehir', 'Kızkalesi', 'Silifke'] },
-  { group: 'Other', items: ['Istanbul', 'Bodrum', 'Fethiye', 'İzmir', 'Northern Cyprus'] },
+  { group: 'Other', items: ['İstanbul', 'Bodrum', 'Fethiye', 'İzmir', 'Northern Cyprus'] },
 ];
 
 /** Turkish layout notation — "2+1" is 2 bedrooms plus a living room. Universal. */

@@ -32,7 +32,7 @@ const mersin = [
 ];
 
 const cities = [
-  ['Istanbul', 'istanbul'], ['Bodrum', 'bodrum'], ['Fethiye', 'fethiye'], ['İzmir', 'izmir'],
+  ['İstanbul', 'istanbul'], ['Bodrum', 'bodrum'], ['Fethiye', 'fethiye'], ['İzmir', 'izmir'],
   ['Çeşme', 'cesme'], ['Yalova', 'yalova'], ['Trabzon', 'trabzon'], ['Bursa', 'bursa'],
   ['Northern Cyprus', 'cyprus'],
 ];
