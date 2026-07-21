@@ -1,13 +1,12 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ScrambleTextPlugin } from 'gsap/ScrambleTextPlugin';
 import Lenis from 'lenis';
 import { LISTINGS, RATES, TABS } from './listings.js';
 import { ARTICLE_TABS } from './footer.js';
 import { cardHTML, articlesHTML, esc, setLang, t, quickRowHTML, moreHTML, footerHTML, megaHTML, drawerHTML } from './render.js';
 import { makeT, LANGS, DEFAULT_LANG } from './i18n.js';
 
-gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin);
+gsap.registerPlugin(ScrollTrigger);
 
 const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -37,7 +36,7 @@ let lenis = null;
 // falls back to native scroll events when Lenis is absent.
 const FINE_POINTER = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 if (!REDUCED && FINE_POINTER) {
-  lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+  lenis = new Lenis({ lerp: 0.12, wheelMultiplier: 1, smoothWheel: true });
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add((t) => lenis.raf(t * 1000));
   gsap.ticker.lagSmoothing(0);
@@ -181,31 +180,31 @@ $$('[data-split]').forEach((el) => {
    letters so the flicker stays in-script. Inert under reduced motion (the plain
    text is already in the DOM). */
 const SCRAMBLE_CHARS = 'ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZabcçdefgğhıijklmnoöprsştuüvyz';
-if (!REDUCED) {
-  $$('[data-scramble]').forEach((el) => {
-    ScrollTrigger.create({
-      trigger: el, start: 'top 82%', once: true,
-      onEnter: () => gsap.to(el, {
-        duration: 1.5, ease: 'none',
-        scrambleText: { text: el.textContent, chars: SCRAMBLE_CHARS, speed: 0.5, revealDelay: 0.25, tweenLength: false },
-      }),
-    });
-  });
-}
-
-/* Hero copy intro — transform only, never opacity.
-   The hero text is above the fold and drives LCP. A fade-from-transparent or a
-   masked-line reveal hides it until animated, which pushed the lede's paint past
-   2.5s on a throttled phone. A translateY-only rise paints every line on the
-   first frame (just offset), so LCP stays fast while the entrance still reads. */
-if (!REDUCED) {
-  const heroCopy = $('[data-hero-copy]');
-  if (heroCopy) {
-    gsap.from([...heroCopy.children], {
-      y: 22, duration: 0.9, ease: 'expo.out', stagger: 0.07, delay: 0.05,
-    });
+{
+  const scrambleEls = REDUCED ? [] : $$('[data-scramble]');
+  // Lazy: the ScrambleText plugin is only needed once, when the (below-fold)
+  // band heading scrolls in — keep it out of the critical bundle.
+  if (scrambleEls.length) {
+    import('gsap/ScrambleTextPlugin').then(({ ScrambleTextPlugin }) => {
+      gsap.registerPlugin(ScrambleTextPlugin);
+      scrambleEls.forEach((el) => {
+        ScrollTrigger.create({
+          trigger: el, start: 'top 82%', once: true,
+          onEnter: () => gsap.to(el, {
+            duration: 1.5, ease: 'none',
+            scrambleText: { text: el.textContent, chars: SCRAMBLE_CHARS, speed: 0.5, revealDelay: 0.25, tweenLength: false },
+          }),
+        });
+      });
+    }).catch(() => { /* the heading is already in the DOM; the decode is a bonus */ });
   }
 }
+
+/* Hero copy intro is now a pure CSS animation (see styles.css .descent__copy).
+   It used to be a gsap.from() here, but on a throttled phone the main bundle
+   takes ~2.9s to parse, so the LCP H1 only settled after that — Lighthouse
+   recorded LCP at ~5.3s. As CSS it runs at first paint, independent of JS, so
+   the H1's LCP is its first paint again. */
 
 /**
  * Re-split a heading after its text changes.

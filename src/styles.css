@@ -25,6 +25,17 @@
   font-display: swap;
   src: url('/fonts/inter.woff2') format('woff2');
 }
+/* Critical hero font: a tiny static-800 subset of just the H1/eyebrow glyphs,
+   preloaded, so the LCP H1 paints in Inter immediately (no ~4.7s font-swap LCP
+   on slow links). Applied only to .display; the rest of the hero swaps in from
+   the full "Inter var". */
+@font-face {
+  font-family: 'Inter Hero';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('/fonts/inter-hero.woff2') format('woff2');
+}
 
 :root {
   /* Core roles (names kept for a clean re-skin):
@@ -297,12 +308,28 @@ a { color: inherit; }
 }
 .descent__copy .display, .descent__copy .lede, .descent__copy .eyebrow { color: #fff; }
 
+/* Hero copy entrance — pure CSS so it runs at first paint (not after the ~2.9s
+   JS parse on a throttled phone). Transform-only: the text is painted at FCP and
+   just rises, so the LCP H1's paint time is its FIRST paint, not a JS settle. */
+@media (prefers-reduced-motion: no-preference) {
+  /* The H1 (.display, the LCP element) is intentionally NOT animated: an active
+     transform animation makes Chromium defer its LCP (measured +2s under CPU
+     throttle). It paints instantly; the eyebrow, lede, search and strap rise. */
+  .descent__copy > *:not(.display) { animation: hero-rise .85s var(--ease) both; }
+  .descent__copy > *:nth-child(2) { animation-delay: .06s; }
+  .descent__copy > *:nth-child(3) { animation-delay: .12s; }
+  .descent__copy > *:nth-child(4) { animation-delay: .18s; }
+  .descent__copy > *:nth-child(5) { animation-delay: .24s; }
+}
+@keyframes hero-rise { from { transform: translateY(24px); } to { transform: translateY(0); } }
+
 .eyebrow {
   font-size: .78rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase;
   opacity: .95; margin-block-end: 1.1rem;
   text-shadow: 0 1px 12px rgb(28 18 10 / .8);
 }
 .display {
+  font-family: 'Inter Hero', var(--font);
   font-size: var(--fs-display); font-weight: 800; letter-spacing: -.045em;
   margin-block-end: 1.15rem;
   text-shadow: 0 2px 40px rgb(28 18 10 / .55);
@@ -637,7 +664,10 @@ a { color: inherit; }
    a quiet base row. The old ~150-link farm was trimmed in footer.js. */
 /* Extra bottom room so the fixed WhatsApp + Kaya stack never sits on the last
    footer row (the social/legal links were being clipped by it). */
-.ftr { padding: clamp(3rem, 6vw, 5rem) var(--pad) clamp(4.5rem, 11vw, 6rem); background: var(--navy); color: rgb(255 255 255 / .6); font-size: .86rem; }
+/* content-visibility skips rendering the (tall) footer until it is near the
+   viewport, cutting initial layout/paint work. contain-intrinsic-size reserves
+   its space so the scrollbar does not jump. No ScrollTrigger lives here. */
+.ftr { padding: clamp(3rem, 6vw, 5rem) var(--pad) clamp(4.5rem, 11vw, 6rem); background: var(--navy); color: rgb(255 255 255 / .6); font-size: .86rem; content-visibility: auto; contain-intrinsic-size: auto 640px; }
 .ftr__inner {
   display: grid; gap: clamp(2rem, 5vw, 4rem);
   grid-template-columns: minmax(14rem, 22rem) 1fr;

@@ -34,6 +34,10 @@
   the image a candidate, 900px == viewport does not). So LCP here is text, and
   the font is on its critical path. Self-hosted and preloaded for that reason.
 -->
+<!-- The 25 KB critical hero font (LCP H1) is preloaded so the H1 paints in Inter
+     from first paint. The full 84 KB font loads at low priority for everything
+     else and swaps in without touching the LCP. -->
+<link rel="preload" as="font" type="font/woff2" href="/fonts/inter-hero.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/fonts/inter.woff2" crossorigin fetchpriority="low">
 
 <!--

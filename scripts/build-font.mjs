@@ -37,7 +37,23 @@ const text = [...chars].join('');
 const full = readFileSync('raw/InterVariable.woff2');
 // Pin the weight axis to the 400-800 range the site actually uses (body 400 ..
 // headings 800). Trimming the variable deltas outside that range roughly halves
-// the file (114 KB -> ~64 KB) so it can be preloaded without hurting LCP.
-const out = await subsetFont(full, text, { targetFormat: 'woff2', variationAxes: { wght: { min: 400, max: 800 } } });
+// the file so it can be preloaded without hurting LCP.
+const AXES = { wght: { min: 400, max: 800 } };
+const out = await subsetFont(full, text, { targetFormat: 'woff2', variationAxes: AXES });
 writeFileSync('public/fonts/inter.woff2', out);
 console.log(`subset ${chars.size} chars, wght 400-800 -> public/fonts/inter.woff2 (${(out.length / 1024).toFixed(0)} KB)`);
+
+// A tiny CRITICAL subset for the LCP element (the hero H1, family "Inter Hero"),
+// preloaded, so it renders in Inter from FIRST paint instead of swapping in at
+// ~font-load time (which on Slow 4G recorded the H1's LCP at ~4.7s). The H1 is a
+// single weight (800), so we PIN the axis to 800 — a static instance, a few KB,
+// not the 54 KB a variable subset of the same glyphs costs. Only the default
+// (Turkish) H1 + eyebrow glyphs; anything else falls to the full "Inter var".
+const hero = new Set();
+const addHero = (s) => { for (const ch of String(s)) hero.add(ch); };
+const tr = JSON.parse(readFileSync('src/tr.json', 'utf8'));
+addHero(tr['hero.h1'] + tr['hero.eyebrow']);
+addHero('ABCÇDEFGĞHIİJKLMNOÖPQRSŞTUÜVWXYZabcçdefgğhıijklmnoöpqrsştuüvwxyz0123456789 ·.,\'’-');
+const heroOut = await subsetFont(full, [...hero].join(''), { targetFormat: 'woff2', variationAxes: { wght: 800 } });
+writeFileSync('public/fonts/inter-hero.woff2', heroOut);
+console.log(`hero critical ${hero.size} chars, static 800 -> public/fonts/inter-hero.woff2 (${(heroOut.length / 1024).toFixed(0)} KB)`);
