@@ -460,7 +460,11 @@ a { color: inherit; }
 .rail { overflow: hidden; margin-inline: calc(var(--pad) * -1); padding-inline: var(--pad); }
 .rail__track { display: flex; gap: var(--rail-gap); will-change: transform; }
 @media (prefers-reduced-motion: reduce), (max-width: 860px) {
-  .rail { overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+  /* touch-action: pan-x — the browser scrolls this rail horizontally on a
+     sideways swipe and lets a vertical swipe scroll the PAGE (not get trapped).
+     overscroll-behavior-x: contain stops a horizontal fling from also nudging
+     the page/parent. */
+  .rail { overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; touch-action: pan-x; overscroll-behavior-x: contain; }
   .rail__track { transform: none !important; }
 }
 

@@ -166,7 +166,7 @@
 
 <!-- mobile drawer: the full menu a phone was missing -->
 <div class="drawer" id="drawer" data-drawer hidden>
-  <div class="drawer__panel"><!--@drawer--></div>
+  <div class="drawer__panel" data-lenis-prevent><!--@drawer--></div>
 </div>
 
 <main id="main">
@@ -232,7 +232,7 @@
       -->
       <form class="quick" action="/turkey" method="get" data-search>
         <div class="quick__row" data-quick-row><!--@quickrow--></div>
-        <div class="quick__more" id="more-filters" data-more hidden><!--@more--></div>
+        <div class="quick__more" id="more-filters" data-more data-lenis-prevent hidden><!--@more--></div>
         <div class="quick__bar">
           <button class="quick__toggle" type="button" data-more-toggle aria-expanded="false" aria-controls="more-filters">
             <span data-i18n="search.more">More filters</span>
@@ -272,9 +272,11 @@
     <button class="results__clear" type="button" data-results-clear data-i18n="search.clear">Clear search</button>
   </div>
 
-  <!-- data-lenis-prevent: on mobile the rail is a native horizontal scroller;
-       without this, Lenis swallows the touch drag and it will not swipe. -->
-  <div class="rail" data-rail data-lenis-prevent>
+  <!-- The rail scrolls horizontally on mobile; touch-action:pan-x (in the CSS)
+       lets a HORIZONTAL swipe move the cards while a VERTICAL swipe passes
+       through to scroll the page. (data-lenis-prevent was wrong here: it blocked
+       both axes, trapping the page scroll and breaking the desktop scrub.) -->
+  <div class="rail" data-rail>
     <div class="rail__track" data-rail-track role="tabpanel" data-rail-panel><!--@rail--></div>
   </div>
 
@@ -647,7 +649,7 @@
     </span>
     <button data-ai-close aria-label="Close assistant" data-i18n-attr="aria-label:ai.close">✕</button>
   </div>
-  <div class="ai__log" data-ai-log aria-live="polite"></div>
+  <div class="ai__log" data-ai-log data-lenis-prevent aria-live="polite"></div>
   <form class="ai__form" data-ai-form>
     <input type="text" placeholder="e.g. 2+1 near the sea under €150,000" aria-label="Ask a question" data-ai-input data-i18n-attr="placeholder:ai.placeholder">
     <button type="submit" aria-label="Send">→</button>

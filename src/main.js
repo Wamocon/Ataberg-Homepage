@@ -30,7 +30,13 @@ const localeOf = () => LANGS.find((l) => l.code === document.documentElement.lan
    Lenis drives ScrollTrigger. Skipped entirely under reduced motion —
    hijacking scroll is exactly what that preference asks us not to do. */
 let lenis = null;
-if (!REDUCED) {
+// Lenis smooths WHEEL / trackpad scrolling — a desktop nicety. On touch devices
+// its native momentum is already smooth, and Lenis's touch handling can trap a
+// vertical swipe inside a nested horizontal carousel (the listings rail). So
+// gate it to fine pointers; phones/tablets get pure native scroll. ScrollTrigger
+// falls back to native scroll events when Lenis is absent.
+const FINE_POINTER = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+if (!REDUCED && FINE_POINTER) {
   lenis = new Lenis({ duration: 1.1, smoothWheel: true });
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add((t) => lenis.raf(t * 1000));
