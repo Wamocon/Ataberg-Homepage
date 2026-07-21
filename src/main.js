@@ -545,8 +545,10 @@ function render() {
    defensible figure. See ANALYSIS.md §2.1. */
 $$('[data-count]').forEach((el) => {
   const to = Number(el.dataset.count);
-  const nf = new Intl.NumberFormat(localeOf());
-  if (REDUCED) { el.textContent = nf.format(to); return; }
+  // Read the locale each frame so the roll-up settles in the ACTIVE language even
+  // if it was queued at boot in another (tr 6.000 vs ru/pl 6 000 vs en 6,000).
+  const nfmt = (n) => new Intl.NumberFormat(localeOf()).format(n);
+  if (REDUCED) { el.textContent = nfmt(to); return; }
   const o = { v: 0 };
   gsap.to(o, {
     v: to,
@@ -555,7 +557,7 @@ $$('[data-count]').forEach((el) => {
     // once: the count rolls up when it first scrolls in and stays put —
     // re-rolling every time it re-enters the viewport reads as a glitch.
     scrollTrigger: { trigger: el, start: 'top 92%', once: true },
-    onUpdate: () => { el.textContent = nf.format(Math.round(o.v)); },
+    onUpdate: () => { el.textContent = nfmt(Math.round(o.v)); },
   });
 });
 
